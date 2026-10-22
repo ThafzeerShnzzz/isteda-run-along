@@ -71,9 +71,9 @@ async function submitRunAlong() {
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify(payload)
     });
-    registrationStatus.textContent='Submission sent. The team will verify your registration.';
+    registrationStatus.textContent='Registration submitted! Welcome to the ISTEDA crew. Your details have been sent to our team.'; registrationStatus.style.color='#d8ff36'; registrationForm.reset();
   } catch (error) {
-    registrationStatus.textContent='This preview could not reach Google Apps Script. Open the HTML file directly in Chrome, or test on the published website.';
+    registrationStatus.textContent='Connection failed. Please check your internet and try again.';
   } finally {button.disabled=false;}
 }
 registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlong();});
