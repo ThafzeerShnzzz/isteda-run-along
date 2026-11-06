@@ -328,7 +328,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 <style id="run-registration-status-style">
 .run-registration-area{display:flex;align-items:center;max-width:740px;margin-top:24px}
 .run-registration-area .run-hero-actions{flex:1 1 auto;margin-top:0;min-width:0}
-.run-registration-status{width:min(100%,540px);display:flex;align-items:center;gap:clamp(10px,3vw,18px);margin:0 0 22px;padding:clamp(12px,3vw,22px);background:#d8ff36;color:#11120f;border-radius:16px;box-shadow:0 12px 28px rgba(0,0,0,.35);animation:runNoticeBounce .75s ease-out .15s both}
+.run-registration-status{width:min(100%,540px);display:flex;align-items:center;gap:clamp(10px,3vw,18px);margin:0 0 22px;padding:clamp(12px,3vw,22px);background:#d8ff36;color:#11120f;border-radius:16px;box-shadow:0 12px 28px rgba(0,0,0,.35);animation:runNoticeBounce .75s ease-out .15s both,runNoticeShake .48s ease-in-out .92s}
+@keyframes runNoticeShake{0%,100%{transform:translateX(0)}18%{transform:translateX(-7px)}36%{transform:translateX(7px)}54%{transform:translateX(-5px)}72%{transform:translateX(4px)}86%{transform:translateX(-2px)}}
 @keyframes runNoticeBounce{0%{opacity:0;transform:translateY(-56px)}55%{opacity:1;transform:translateY(8px)}74%{transform:translateY(-4px)}100%{opacity:1;transform:translateY(0)}}
 .run-registration-bell{box-sizing:border-box;width:clamp(38px,8vw,62px);height:clamp(38px,8vw,62px);padding:clamp(8px,2vw,15px);flex:none;border-radius:50%;background:#161910;color:#d8ff36}
 .run-registration-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
