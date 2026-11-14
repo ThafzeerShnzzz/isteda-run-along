@@ -354,26 +354,6 @@ function normalizeWhatsApp(value) {
   return digits;
 }
 
-const submittedNumbers = new Set();
-
-function wasSubmitted(number) {
-  if (submittedNumbers.has(number)) return true;
-  try {
-    return localStorage.getItem('run-along-2026-submitted:' + number) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function rememberSubmission(number) {
-  submittedNumbers.add(number);
-  try {
-    localStorage.setItem('run-along-2026-submitted:' + number, '1');
-  } catch {
-    // The in-memory check still works when browser storage is unavailable.
-  }
-}
-
 async function submitRunAlong() {
   const button = document.getElementById('register-button');
   if (button.disabled) return;
@@ -382,10 +362,6 @@ async function submitRunAlong() {
   const whatsapp = normalizeWhatsApp(document.getElementById('phone').value);
   if (!name) { registrationStatus.textContent = 'Please enter your name.'; return; }
   if (!/^\d{8,15}$/.test(whatsapp)) { registrationStatus.textContent = 'Please enter a valid WhatsApp number (e.g. 971501234567).'; return; }
-  if (wasSubmitted(whatsapp)) {
-    registrationStatus.textContent = 'A registration was already sent from this browser for this WhatsApp number.';
-    return;
-  }
   const payload = {formType:'run-along-registration',name,whatsapp,
     previousRun:document.getElementById('before').value,
     joiningPoint:document.getElementById('where').value,
@@ -394,15 +370,26 @@ async function submitRunAlong() {
   button.disabled=true;
   registrationStatus.textContent='Sending registration…';
   try {
-    await fetch(RUN_ALONG_SCRIPT_URL, {
-      method:'POST', mode:'no-cors',
+    const response = await fetch(RUN_ALONG_SCRIPT_URL, {
+      method:'POST',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify(payload)
     });
-    rememberSubmission(whatsapp);
-    registrationStatus.textContent='Registration submitted! Welcome to the ISTEDA crew. Your details have been sent to our team.'; registrationStatus.style.color='#d8ff36'; registrationForm.reset();
-  } catch (error) {
-    registrationStatus.textContent='This preview could not reach Google Apps Script. Open the HTML file directly in Chrome, or test on the published website.';
+    if (!response.ok) throw new Error('Registration request failed');
+    const result = (await response.text()).trim();
+
+    if (result === 'DUPLICATE') {
+      registrationStatus.textContent = 'This WhatsApp number is already registered for RUN ALONG.';
+      return;
+    }
+
+    if (result !== 'OK') throw new Error('Registration was not confirmed');
+
+    registrationStatus.textContent = 'Registration confirmed! Welcome to the ISTEDA crew.';
+    registrationStatus.style.color = '#d8ff36';
+    registrationForm.reset();
+  } catch {
+    registrationStatus.textContent = 'We couldn’t confirm your registration. Please try again.';
   } finally {button.disabled=false;}
 }
 registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlong();});
