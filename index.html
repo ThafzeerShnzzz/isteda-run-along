@@ -347,12 +347,45 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 const RUN_ALONG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsP1cpVM3rtBA4uqqsVFgRDl3skZp0dErb1_xoP-vLakzJG4_khmvaMjw-pRQae_COJw/exec';
 const registrationForm = document.getElementById('registration');
 const registrationStatus = document.getElementById('registration-status');
+function normalizeWhatsApp(value) {
+  const digits = value.replace(/\D/g, '').replace(/^00/, '');
+  if (/^05\d{8}$/.test(digits)) return '971' + digits.slice(1);
+  if (/^5\d{8}$/.test(digits)) return '971' + digits;
+  return digits;
+}
+
+const submittedNumbers = new Set();
+
+function wasSubmitted(number) {
+  if (submittedNumbers.has(number)) return true;
+  try {
+    return localStorage.getItem('run-along-2026-submitted:' + number) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function rememberSubmission(number) {
+  submittedNumbers.add(number);
+  try {
+    localStorage.setItem('run-along-2026-submitted:' + number, '1');
+  } catch {
+    // The in-memory check still works when browser storage is unavailable.
+  }
+}
+
 async function submitRunAlong() {
   const button = document.getElementById('register-button');
+  if (button.disabled) return;
+  registrationStatus.style.color = '';
   const name = document.getElementById('name').value.trim();
-  const whatsapp = document.getElementById('phone').value.replace(/[^0-9]/g, '');
+  const whatsapp = normalizeWhatsApp(document.getElementById('phone').value);
   if (!name) { registrationStatus.textContent = 'Please enter your name.'; return; }
   if (!/^\d{8,15}$/.test(whatsapp)) { registrationStatus.textContent = 'Please enter a valid WhatsApp number (e.g. 971501234567).'; return; }
+  if (wasSubmitted(whatsapp)) {
+    registrationStatus.textContent = 'A registration was already sent from this browser for this WhatsApp number.';
+    return;
+  }
   const payload = {formType:'run-along-registration',name,whatsapp,
     previousRun:document.getElementById('before').value,
     joiningPoint:document.getElementById('where').value,
@@ -366,6 +399,7 @@ async function submitRunAlong() {
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body:JSON.stringify(payload)
     });
+    rememberSubmission(whatsapp);
     registrationStatus.textContent='Registration submitted! Welcome to the ISTEDA crew. Your details have been sent to our team.'; registrationStatus.style.color='#d8ff36'; registrationForm.reset();
   } catch (error) {
     registrationStatus.textContent='This preview could not reach Google Apps Script. Open the HTML file directly in Chrome, or test on the published website.';
