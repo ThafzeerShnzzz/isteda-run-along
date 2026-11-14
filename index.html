@@ -379,7 +379,8 @@ async function submitRunAlong() {
     const result = (await response.text()).trim();
 
     if (result === 'DUPLICATE') {
-      registrationStatus.textContent = 'This WhatsApp number is already registered for RUN ALONG.';
+      registrationStatus.style.color = '#ff656b';
+      registrationStatus.textContent = '✕ This WhatsApp number is already registered for RUN ALONG.';
       return;
     }
 
