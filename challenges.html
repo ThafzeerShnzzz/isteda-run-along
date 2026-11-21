@@ -22,6 +22,9 @@ main:has(#game-loading:not([hidden])) #different-entry{display:none}
 .runner{position:relative;display:block;width:clamp(72px,25vw,104px);aspect-ratio:55/104;animation:run-bounce .35s ease-in-out infinite alternate}
 .runner:nth-child(2){animation-delay:-.22s}.runner:nth-child(3){animation-delay:-.11s}
 .runner>i{position:absolute;left:45%;top:2%;width:31%;aspect-ratio:1;border-radius:50%;background:#d39c70}
+.runner>i::before,.runner>i::after{content:"";position:absolute;background:#050505;border:1px solid #555}
+.runner>i::before{left:-5%;top:-9%;width:105%;height:54%;border-radius:70% 70% 16% 16%;border-bottom:0}
+.runner>i::after{left:37%;top:38%;width:86%;height:13%;border-radius:0 80% 50% 25%}
 .runner>b{position:absolute;z-index:1;left:23%;top:19%;width:63%;height:36%;display:grid;place-items:center;border-radius:18% 18% 9% 9%;background:var(--lime);transform:skew(-9deg)}
 .runner>b .photorun-forsa{width:96%;aspect-ratio:430/150;border-radius:2px}
 .runner>b .photorun-forsa img{top:-400%}
