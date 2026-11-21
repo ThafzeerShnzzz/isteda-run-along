@@ -3,11 +3,9 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const input = JSON.parse(e.postData.contents);
-    if (!["entry", "task"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
-    const photo = decodePhoto_(input.photo);
+    if (!["entry", "task", "status"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
     const config = PropertiesService.getScriptProperties().getProperties();
     const workbook = SpreadsheetApp.openById(config.SPREADSHEET_ID);
-    const folder = DriveApp.getFolderById(config.PHOTO_FOLDER_ID);
     const cache = CacheService.getScriptCache();
     let phone = "";
     if (input.action === "entry") {
@@ -24,6 +22,7 @@ function doPost(e) {
       if (typeof input.session !== "string" || !/^[a-f0-9-]{36}$/.test(input.session)) return expired_();
       phone = cache.get("entry:" + input.session);
       if (!phone) return expired_();
+      if (input.action === "status") return reply_({ok: true, ...reviewProgress_(workbook, phone)});
       if (!/^(L[123]|OPEN)-[0-9]{2}$/.test(input.id) || typeof input.title !== "string") {
         return reply_({ok: false, error: "Invalid task."});
       }
@@ -31,6 +30,8 @@ function doPost(e) {
         return reply_({ok: false, error: "Name the three Emirates in the caption."});
       }
     }
+    const photo = decodePhoto_(input.photo);
+    const folder = DriveApp.getFolderById(config.PHOTO_FOLDER_ID);
     lock.waitLock(10000);
     const tabName = input.action === "entry" ? "Challenge Entries" : "Challenge Photos";
     let tab = workbook.getSheetByName(tabName);
@@ -57,16 +58,9 @@ function doPost(e) {
     if (input.action === "entry") {
       const session = Utilities.getUuid();
       cache.put("entry:" + session, phone, 21600);
-      const photos = workbook.getSheetByName("Challenge Photos");
-      const saved = photos && photos.getLastRow() > 1
-        ? photos.getRange(2, 2, photos.getLastRow() - 1, 6).getValues()
-        : [];
-      const completed = [...new Set(saved.filter(row =>
-        normalizePhone_(row[0]) === phone && row[5] !== "Rejected"
-      ).map(row => row[1]))];
-      return reply_({ok: true, session, completed});
+      return reply_({ok: true, session, ...reviewProgress_(workbook, phone)});
     }
-    return reply_({ok: true, already: duplicate});
+    return reply_({ok: true, already: duplicate, ...reviewProgress_(workbook, phone)});
   } catch (error) {
     console.error(String(error));
     return reply_({ok: false, error: "The upload could not be saved. Please try again."});
@@ -100,4 +94,20 @@ function expired_() {
 
 function reply_(data) {
   return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function reviewProgress_(workbook, phone) {
+  const sheet = workbook.getSheetByName("Challenge Photos");
+  const reviews = {};
+  if (sheet && sheet.getLastRow() > 1) {
+    for (const row of sheet.getRange(2, 2, sheet.getLastRow() - 1, 6).getDisplayValues()) {
+      const [number, task, , , , status] = row;
+      if (normalizePhone_(number) !== phone || !/^(L[123]|OPEN)-\d{2}$/.test(task)) continue;
+      reviews[task] = status || "Pending";
+    }
+  }
+  return {
+    reviews,
+    completed: Object.keys(reviews).filter(task => ["Approved", "Winner"].includes(reviews[task]))
+  };
 }
