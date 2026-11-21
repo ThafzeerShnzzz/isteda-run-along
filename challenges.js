@@ -296,13 +296,6 @@ byId("verify").addEventListener("submit", async event => {
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
   const name = String(data.get("name") || "").trim();
-  if (!name) {
-    status.textContent = "Enter your name.";
-    form.removeAttribute("aria-busy");
-    button.disabled = false;
-    form.elements.name.focus();
-    return;
-  }
   const photo = data.get("pass");
   const preview = testingMode && !photo?.size;
   status.textContent = preview ? "Checking your RUN ALONG registration…" : "Checking your number and uploading your admit card photo…";
@@ -320,6 +313,12 @@ byId("verify").addEventListener("submit", async event => {
     openChallenges();
   } catch (error) {
     status.textContent = error.message;
+    if (error.message === "Enter your name.") {
+      const nameInput = form.elements.name;
+      nameInput.closest("label").hidden = false;
+      nameInput.required = true;
+      nameInput.focus();
+    }
   } finally {
     form.removeAttribute("aria-busy");
     button.disabled = false;
