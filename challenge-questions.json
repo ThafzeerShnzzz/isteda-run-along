@@ -98,21 +98,6 @@
     "scoringLimit": 3
   },
   {
-    "title": "Open Challenge",
-    "tasks": [
-      {
-        "id": "OPEN-01",
-        "title": "Selfie with Maha",
-        "text": "Take a selfie with Maha."
-      },
-      {
-        "id": "OPEN-02",
-        "title": "Vyshu’s Crying Face",
-        "text": "Get Vyshu to do their best fake crying face and take a photo together."
-      }
-    ]
-  },
-  {
     "title": "PhotoRun Awards",
     "tasks": [
       {
@@ -130,6 +115,7 @@
         "title": "Most Calories Burned",
         "text": "Upload a screenshot or other proof showing your total calories burned on Dubai Run day."
       }
-    ]
+    ],
+    "kind": "awards"
   }
 ]
