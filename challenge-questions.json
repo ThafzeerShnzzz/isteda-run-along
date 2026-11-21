@@ -36,29 +36,29 @@
     "tasks": [
       {
         "id": "L2-01",
-        "title": "Dubai Run Throwback",
-        "text": "Find someone wearing an older Dubai Run shirt. Take a photo together showing both editions. Bonus bragging rights if you get three different years in one shot."
+        "title": "Q1. Dubai Run Throwback",
+        "text": "Can you find someone wearing an older Dubai Run shirt and take a photo showing both editions? Can you get three different years in one shot?"
       },
       {
         "id": "L2-02",
-        "title": "Shoe Twin",
-        "text": "Find a runner wearing shoes of the same brand and colour as yours. Take a photo showing both pairs."
+        "title": "Q2. Shoe Twin",
+        "text": "Can you find a runner wearing the same shoe brand and colour as you and take a photo showing both pairs?"
       },
       {
         "id": "L2-06",
-        "title": "The Runner Rectangle",
-        "text": "Find four Dubai Run participants from outside ISTEDA. Make a rectangle with your arms together and ask a friend to take the photo."
+        "title": "Q3. The Runner Rectangle",
+        "text": "Can you find four Dubai Run participants from outside ISTEDA and form a rectangle with your arms together? Ask a friend to take the photo."
       },
       {
         "id": "L2-04",
-        "title": "Match the Reference Photo",
-        "text": "Choose either reference spot: the Al Boursa St 200 m sign or Texas Chicken. Take a photo from the same spot and match the angle as closely as you can.",
+        "title": "Q4. Match the Reference Photo",
+        "text": "Can you recreate either reference photo from the same spot and angle? Choose the Al Boursa St 200 m sign or Texas Chicken.",
         "referencePhotos": true
       },
       {
         "id": "L2-05",
-        "title": "Direction Challenge ↪️📸",
-        "text": "Find a road sign with a left-turn or right-turn arrow. Strike a dramatic pose pointing or leaning in the same direction. Ask a friend to capture you and the sign in the same photo."
+        "title": "Q5. Direction Challenge ↪️📸",
+        "text": "Can you find a left-turn or right-turn road sign and strike a dramatic pose pointing or leaning in the same direction? Ask a friend to capture you and the sign together."
       }
     ],
     "points": 2,
@@ -69,28 +69,28 @@
     "tasks": [
       {
         "id": "L3-01",
-        "title": "Reverse Bibs",
-        "text": "Find a runner whose bib ends with your last two digits reversed. If yours ends in 27, look for 72. Take a selfie showing both bibs."
+        "title": "Q1. Reverse Bibs",
+        "text": "Can you find a runner whose bib ends with your last two digits reversed? If yours ends in 27, look for 72. Take a selfie showing both bibs."
       },
       {
         "id": "L3-02",
-        "title": "Sheikh Zayed Road Jump 📸",
-        "text": "On a clear stretch of the closed Dubai Run route, find two white dashed lane markings in the same row. Jump from one dash toward the next and ask a friend to catch you with both feet off the ground."
+        "title": "Q2. Sheikh Zayed Road Jump 📸",
+        "text": "Can you jump from one white dash toward the next on a clear stretch of the closed Sheikh Zayed Road route? Ask a friend to photograph you with both feet off the ground."
       },
       {
         "id": "L3-03",
-        "title": "Triple 7",
-        "text": "Find someone whose bib contains three 7s anywhere in the number. Take a selfie with them holding up seven fingers."
+        "title": "Q3. Triple 7",
+        "text": "Can you find a runner whose bib contains three 7s anywhere in the number? Take a selfie with them holding up seven fingers."
       },
       {
         "id": "L3-04",
-        "title": "Birthday Challenge",
-        "text": "Find someone whose bib ends in the day of the month you were born. If you were born on the 21st, look for 21. Take a selfie while they point to the matching digits."
+        "title": "Q4. Birthday Challenge",
+        "text": "Can you find a runner whose bib ends with your birth day of the month? If you were born on the 21st, look for 21. Take a selfie while they point to the matching digits."
       },
       {
         "id": "L3-05",
-        "title": "Maths Match",
-        "text": "Find a runner whose last bib digit adds to 10 with yours: 6 + 4, 9 + 1, or 2 + 8. Take a selfie with both bibs visible and show the numbers with your fingers. If your bib ends in 0, find two runners whose bibs end in 9 and 1, and show all three bibs in one photo."
+        "title": "Q5. Maths Match",
+        "text": "Can you find a runner whose final bib digit adds to 10 with yours, like 6 and 4, 9 and 1, or 2 and 8? Take a selfie showing both bibs and the numbers on your fingers. If yours ends in 0, find runners ending in 9 and 1 and show all three bibs in one photo."
       }
     ],
     "points": 3,
