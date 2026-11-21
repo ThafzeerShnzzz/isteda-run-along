@@ -1,6 +1,24 @@
 const byId = id => document.getElementById(id);
 const make = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
 const storageKey = "run-along-challenge-progress";
+
+function previewProgressKey(phone) {
+  let digits = String(phone).replace(/[^0-9]/g, "").replace(/^00/, "");
+  if (/^05[0-9]{8}$/.test(digits)) digits = "971" + digits.slice(1);
+  if (/^5[0-9]{8}$/.test(digits)) digits = "971" + digits;
+  return storageKey + "-preview-" + digits;
+}
+
+function restorePreview(phone) {
+  const key = previewProgressKey(phone);
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (Array.isArray(saved?.completed)) return {...saved, preview: true, key};
+  } catch {
+    // Continue with a new preview if browser storage is unavailable.
+  }
+  return {completed: [], reviews: {}, preview: true, key};
+}
 let catalog, endpoint, activeLevel = -1;
 let gameTimer;
 let photoRunUnlocked = false;
@@ -15,7 +33,8 @@ try {
 
 function saveEntry() {
   try {
-    if (entry) sessionStorage.setItem(storageKey, JSON.stringify(entry));
+    if (entry?.preview) localStorage.setItem(entry.key, JSON.stringify(entry));
+    else if (entry) sessionStorage.setItem(storageKey, JSON.stringify(entry));
     else sessionStorage.removeItem(storageKey);
   } catch {
     // The current page remains usable when browser storage is unavailable.
@@ -56,8 +75,7 @@ function levelCount(level) {
 }
 
 function updateProgress() {
-  byId("final-submit").hidden = Boolean(entry.finalized);
-  byId("final-state").textContent = entry.finalized ? (entry.preview ? "Test submission complete." : "Entry submitted.") : "";
+  byId("final-state").textContent = entry.finalized ? "Progress saved. You can return to finish more challenges." : "";
   let total = 0;
   catalog.forEach((level, index) => {
     const count = levelCount(level);
@@ -109,7 +127,6 @@ function displayLevel(index) {
       continue;
     }
     if (review === "Rejected") card.append(make("p", "Photo rejected. You can submit a new photo."));
-    if (entry.finalized) continue;
     const form = document.createElement("form");
     const label = make("label", task.id === "OPEN-05" ? "Attach screenshot or photo proof" : "Attach task photo");
     const photo = Object.assign(document.createElement("input"), {type: "file", accept: "image/*", required: true});
@@ -146,7 +163,7 @@ function displayLevel(index) {
         } else {
           entry.reviews = {...entry.reviews, [task.id]: "Pending"};
         }
-        if (!currentEntry.preview) saveEntry();
+        saveEntry();
         updateProgress();
         form.replaceWith(make("p", entry.preview ? "Test submission complete" : "Submitted for review"));
       } catch (error) {
@@ -296,9 +313,9 @@ byId("verify").addEventListener("submit", async event => {
       : await request({action: "entry", phone, name, photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
-    entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, finalized: Boolean(result?.finalized), preview};
+    entry = preview ? restorePreview(phone) : {session: result.session, completed: result.reviews ? result.completed : [], reviews: result.reviews || {}, finalized: Boolean(result.finalized), preview: false};
     status.textContent = "";
-    if (!preview) saveEntry();
+    saveEntry();
     form.reset();
     openChallenges();
   } catch (error) {
@@ -363,15 +380,14 @@ byId("refresh-score")?.addEventListener("click", async () => {
 
 byId("final-submit").addEventListener("click", async () => {
   const current = entry;
-  if (!current || current.finalized || byId("tasks").querySelector("form button:disabled")) return;
-  if (!window.confirm("Submit your PhotoRun entry? You cannot add photos after submitting.")) return;
+  if (!current || byId("tasks").querySelector("form button:disabled")) return;
   const button = byId("final-submit");
   button.disabled = true;
   try {
     if (!current.preview) await request({action: "finalize", session: current.session});
     if (entry !== current) return;
     current.finalized = true;
-    if (!current.preview) saveEntry();
+    saveEntry();
     const selected = activeLevel;
     if (selected >= 0) {
       activeLevel = -1;
