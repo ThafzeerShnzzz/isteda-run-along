@@ -318,7 +318,7 @@ byId("verify").addEventListener("submit", async event => {
   const data = new FormData(form);
   const button = byId("continue");
   const status = byId("entry-status");
-  if (!endpoint || !photoRunUnlocked) return;
+  if ((!endpoint && !testingMode) || !photoRunUnlocked) return;
   button.disabled = true;
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
@@ -349,14 +349,17 @@ async function json(url) {
 }
 
 try {
-  byId("verify").elements.pass.required = !testingMode;
+  const photoInput = byId("verify").elements.pass;
+  photoInput.required = !testingMode;
+  photoInput.closest("label").hidden = testingMode;
+  photoInput.disabled = testingMode;
   byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
     json("challenge-questions.json?v=special-awards"), json("challenge-config.json")
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
-  if (endpoint) {
+  if (endpoint || testingMode) {
     byId("continue").disabled = false;
     if (photoRunUnlocked && entry?.session && Array.isArray(entry.completed)) openChallenges();
   } else {
