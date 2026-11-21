@@ -3,7 +3,7 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const input = JSON.parse(e.postData.contents);
-    if (!["entry", "task", "status"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
+    if (!["entry", "task", "status", "finalize"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
     const config = PropertiesService.getScriptProperties().getProperties();
     const workbook = SpreadsheetApp.openById(config.SPREADSHEET_ID);
     const cache = CacheService.getScriptCache();
@@ -26,6 +26,19 @@ function doPost(e) {
       phone = cache.get("entry:" + input.session);
       if (!phone) return expired_();
       if (input.action === "status") return reply_({ok: true, ...reviewProgress_(workbook, phone)});
+      if (input.action === "finalize") {
+        lock.waitLock(10000);
+        const entries = workbook.getSheetByName("Challenge Entries");
+        const row = photoRunEntryRow_(entries, phone);
+        if (!row) return expired_();
+        const cell = entries.getRange(row, 9);
+        if (!cell.getValue()) {
+          entries.getRange(1, 9).setValue("Submitted at");
+          cell.setValue(new Date());
+          SpreadsheetApp.flush();
+        }
+        return reply_({ok: true, finalized: true});
+      }
       if (!/^(L[123]|OPEN)-[0-9]{2}$/.test(input.id) || typeof input.title !== "string") {
         return reply_({ok: false, error: "Invalid task."});
       }
@@ -36,6 +49,9 @@ function doPost(e) {
     const photo = decodePhoto_(input.photo);
     const folder = DriveApp.getFolderById(config.PHOTO_FOLDER_ID);
     lock.waitLock(10000);
+    if (input.action === "task" && photoRunFinalized_(workbook, phone)) {
+      return reply_({ok: false, error: "Your PhotoRun entry has already been submitted."});
+    }
     const tabName = input.action === "entry" ? "Challenge Entries" : "Challenge Photos";
     let tab = workbook.getSheetByName(tabName);
     if (!tab) {
@@ -116,6 +132,20 @@ function reviewProgress_(workbook, phone) {
   }
   return {
     reviews,
+    finalized: photoRunFinalized_(workbook, phone),
     completed: Object.keys(reviews).filter(task => ["Approved", "Winner"].includes(reviews[task]))
   };
+}
+
+function photoRunEntryRow_(sheet, phone) {
+  if (!sheet || sheet.getLastRow() < 2) return 0;
+  const numbers = sheet.getRange(2, 2, sheet.getLastRow() - 1, 1).getDisplayValues();
+  const match = numbers.findIndex(row => normalizePhone_(row[0]) === phone);
+  return match < 0 ? 0 : match + 2;
+}
+
+function photoRunFinalized_(workbook, phone) {
+  const entries = workbook.getSheetByName("Challenge Entries");
+  const row = photoRunEntryRow_(entries, phone);
+  return row > 0 && Boolean(entries.getRange(row, 9).getValue());
 }
