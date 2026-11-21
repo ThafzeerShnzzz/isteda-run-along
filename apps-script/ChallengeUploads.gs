@@ -3,9 +3,10 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const input = JSON.parse(e.postData.contents);
-    if (!["entry", "verify", "task", "status", "finalize"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
+    if (!["entry", "verify", "task", "status", "finalize", "leaderboard"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
     const config = PropertiesService.getScriptProperties().getProperties();
     const workbook = SpreadsheetApp.openById(config.SPREADSHEET_ID);
+    if (input.action === "leaderboard") return reply_(photoRunLeaderboard_(workbook, config));
     const cache = CacheService.getScriptCache();
     let phone = "";
     let name = "";
@@ -149,4 +150,58 @@ function photoRunFinalized_(workbook, phone) {
   const entries = workbook.getSheetByName("Challenge Entries");
   const row = photoRunEntryRow_(entries, phone);
   return row > 0 && Boolean(entries.getRange(row, 9).getValue());
+}
+
+function photoRunLeaderboard_(workbook, config) {
+  const levels = [{"ids":["L1-01","L1-02","L1-03","L1-04","L1-05"],"points":1,"limit":3},{"ids":["L2-01","L2-02","L2-06","L2-04","L2-05"],"points":2,"limit":3},{"ids":["L3-01","L3-02","L3-03","L3-04","L3-05"],"points":3,"limit":3}];
+  const total = levels.reduce((count, level) => count + level.ids.length, 0);
+  const entries = workbook.getSheetByName("Challenge Entries");
+  const photos = workbook.getSheetByName("Challenge Photos");
+  if (!entries || !photos || entries.getLastRow() < 2 || photos.getLastRow() < 2) {
+    return {ok: true, total, rankings: []};
+  }
+
+  const registered = workbook.getSheetByName(config.REGISTRATION_TAB);
+  const names = new Map();
+  if (registered && registered.getLastRow() > 0) {
+    const phoneColumn = Number(config.WHATSAPP_COLUMN || 3);
+    for (const row of registered.getRange(1, 1, registered.getLastRow(), Math.max(2, phoneColumn)).getDisplayValues()) {
+      const phone = normalizePhone_(row[phoneColumn - 1]);
+      if (phone && row[1].trim() && !names.has(phone)) names.set(phone, row[1].trim());
+    }
+  }
+
+  const players = new Map();
+  for (const row of entries.getRange(2, 1, entries.getLastRow() - 1, 8).getDisplayValues()) {
+    const phone = normalizePhone_(row[1]);
+    const name = names.get(phone) || row[7].trim();
+    if (phone && name && row[2] === "PASS" && row[6] !== "Rejected") {
+      players.set(phone, {name, reviews: new Map()});
+    }
+  }
+  for (const row of photos.getRange(2, 2, photos.getLastRow() - 1, 6).getDisplayValues()) {
+    const player = players.get(normalizePhone_(row[0]));
+    if (player) player.reviews.set(row[1], row[5]);
+  }
+
+  const scores = [];
+  for (const player of players.values()) {
+    let score = 0;
+    let completed = 0;
+    for (const level of levels) {
+      const count = level.ids.filter(id => player.reviews.get(id) === "Approved").length;
+      completed += count;
+      score += Math.min(count, level.limit) * level.points;
+    }
+    score += ["OPEN-03", "OPEN-04"].filter(id => player.reviews.get(id) === "Winner").length * 4;
+    if (score > 0) scores.push({name: player.name, score, completed});
+  }
+
+  scores.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
+  let position = 0;
+  const rankings = scores.slice(0, 10).map((row, index) => {
+    if (index === 0 || row.score !== scores[index - 1].score) position = index + 1;
+    return {position, ...row};
+  });
+  return {ok: true, total, rankings};
 }
