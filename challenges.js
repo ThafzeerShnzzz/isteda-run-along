@@ -378,11 +378,19 @@ byId("verify").addEventListener("submit", async event => {
   button.disabled = true;
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
+  const name = String(data.get("name") || "").trim();
+  if (!name) {
+    status.textContent = "Enter your name.";
+    form.removeAttribute("aria-busy");
+    button.disabled = false;
+    form.elements.name.focus();
+    return;
+  }
   const photo = data.get("pass");
   const preview = testingMode && !photo?.size;
   status.textContent = preview ? "Opening the test game…" : "Checking your number and uploading your admit card photo…";
   try {
-    const result = preview ? null : await request({action: "entry", phone: data.get("phone"), photo: await photoData(photo)});
+    const result = preview ? null : await request({action: "entry", phone: data.get("phone"), name, photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
     entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, preview};
