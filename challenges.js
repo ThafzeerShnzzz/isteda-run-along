@@ -223,7 +223,7 @@ byId("verify").addEventListener("submit", async event => {
   const status = byId("entry-status");
   if (!endpoint) return;
   button.disabled = true;
-  status.textContent = "Checking your number and uploading your tag photo…";
+  status.textContent = "Checking your number and uploading your admit card photo…";
   try {
     const result = await request({action: "entry", phone: data.get("phone"), photo: await photoData(data.get("pass"))});
     entry = {session: result.session, completed: result.completed || []};
