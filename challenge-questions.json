@@ -1,31 +1,31 @@
 [
   {
-    "title": "Level 1",
+    "title": "Level 1 (Easy Mode)",
     "tasks": [
       {
         "id": "L1-01",
-        "title": "Matching Shoe Brand",
-        "text": "Find a runner wearing the same shoe brand as you. Take a photo showing both pairs."
+        "title": "ISTEDA Cap & Wristband",
+        "text": "Take a photo of yourself wearing both the exclusive ISTEDA cap and wristband."
       },
       {
         "id": "L1-02",
-        "title": "10-Runner Selfie",
-        "text": "Take a group selfie with 10 other runners."
+        "title": "ISTEDA Team Selfie",
+        "text": "Take a group selfie with at least five ISTEDA team members."
       },
       {
         "id": "L1-03",
-        "title": "Finish Line Photo",
-        "text": "Take a photo with the Dubai Run finish sign visible."
+        "title": "ISTEDA Member Selfie",
+        "text": "Take a selfie with an ISTEDA member of the opposite gender."
       },
       {
         "id": "L1-04",
-        "title": "Dubai Run Bib Selfie",
-        "text": "Take a selfie with your own Dubai Run bib visible."
+        "title": "ISTEDA Face Challenge",
+        "text": "Get one of these expressions on camera: Vyshu crying, Maha laughing, Dona blushing, or Lino looking angry. Choose any one."
       },
       {
         "id": "L1-05",
-        "title": "Matching Colours",
-        "text": "Find a runner wearing the same shoe colour as you. Take a photo showing both pairs."
+        "title": "Meet the New Members",
+        "text": "Take a selfie with three ISTEDA members who joined on or after the OKP event."
       }
     ],
     "points": 1,
