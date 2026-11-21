@@ -162,7 +162,7 @@ function wrap(text) {
 
 function downloadPDF() {
   const lines = [
-    "RUN ALONG. | ISTEDA x EL FORSA", "Dubai Run Challenge Card", "",
+    "RUN ALONG. | ISTEDA x EL FORSA", "PhotoRun | Dubai Run Challenge Card", "",
     "Take your photos offline. Return to the Challenges page to upload later.", ""
   ];
   for (const level of catalog) {
@@ -198,7 +198,7 @@ function downloadPDF() {
   for (const offset of offsets) pdf += String(offset).padStart(10, "0") + " 00000 n \n";
   pdf += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF\n";
   const url = URL.createObjectURL(new Blob([pdf], {type: "application/pdf"}));
-  const link = Object.assign(document.createElement("a"), {href: url, download: "RUN_ALONG_Challenge_Card.pdf"});
+  const link = Object.assign(document.createElement("a"), {href: url, download: "RUN_ALONG_PhotoRun.pdf"});
   document.body.append(link);
   link.click();
   link.remove();
