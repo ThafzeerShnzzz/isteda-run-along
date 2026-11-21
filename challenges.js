@@ -1,8 +1,22 @@
 const byId = id => document.getElementById(id);
 const make = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
-let catalog, endpoint, activeLevel = 0;
-let configReady = false;
-let session = sessionStorage.getItem("run-along-entry") || "";
+const storageKey = "run-along-challenge-progress";
+let catalog, endpoint, activeLevel = -1;
+let entry = null;
+try {
+  entry = JSON.parse(sessionStorage.getItem(storageKey));
+} catch {
+  // A fresh entry can still be started.
+}
+
+function saveEntry() {
+  try {
+    if (entry) sessionStorage.setItem(storageKey, JSON.stringify(entry));
+    else sessionStorage.removeItem(storageKey);
+  } catch {
+    // The current page remains usable when browser storage is unavailable.
+  }
+}
 
 async function request(data) {
   const response = await fetch(endpoint, {
@@ -27,48 +41,85 @@ async function photoData(file) {
   }
 }
 
+
+function levelLabel(level) {
+  if (!level.points) return level.title;
+  return level.title + " (" + level.points + (level.points === 1 ? " point each)" : " points each)");
+}
+
+function levelCount(level) {
+  return level.tasks.filter(task => entry.completed.includes(task.id)).length;
+}
+
+function updateProgress() {
+  let total = 0;
+  catalog.forEach((level, index) => {
+    const count = levelCount(level);
+    total += count * (level.points || 0);
+    byId("levels").children[index].textContent = levelLabel(level) + " · " + count + "/" + level.tasks.length;
+  });
+  byId("score").textContent = "Total points: " + total;
+  if (activeLevel >= 0) {
+    const level = catalog[activeLevel];
+    byId("level-progress").textContent = "Challenges completed: " + levelCount(level) + "/" + level.tasks.length;
+  }
+}
+
 function displayLevel(index) {
   activeLevel = index;
   const level = catalog[index];
   const section = byId("tasks");
-  for (const [i, button] of [...byId("levels").children].entries()) {
+  section.hidden = false;
+  [...byId("levels").children].forEach((button, i) => {
     button.setAttribute("aria-pressed", String(i === index));
-  }
-  section.replaceChildren(make("h2", level.title));
+  });
+  const progress = make("p", "");
+  progress.id = "level-progress";
+  progress.setAttribute("role", "status");
+  section.replaceChildren(make("h2", levelLabel(level)), progress);
+  updateProgress();
   if (level.rule) section.append(make("p", level.rule));
   if (!level.tasks.length) section.append(make("p", "Tasks coming soon."));
   for (const task of level.tasks) {
     const card = document.createElement("article");
+    card.append(make("h3", task.title), make("p", task.text));
+    section.append(card);
+    if (entry.completed.includes(task.id)) {
+      card.append(make("p", "Photo submitted"));
+      continue;
+    }
     const form = document.createElement("form");
     const label = make("label", "Attach task photo");
     const photo = Object.assign(document.createElement("input"), {type: "file", accept: "image/*", required: true});
-    const caption = Object.assign(document.createElement("input"), {type: "text", maxLength: 160, required: true});
     const button = make("button", "Submit Photo");
     const status = make("output", "");
     status.setAttribute("role", "status");
     label.append(photo);
     form.append(label);
+    let caption;
     if (task.caption) {
+      caption = Object.assign(document.createElement("input"), {type: "text", maxLength: 160, required: true});
       const captionLabel = make("label", "Caption");
       captionLabel.append(caption);
       form.append(captionLabel);
     }
     form.append(button, status);
-    form.hidden = !endpoint || !session;
-    card.append(make("h3", task.title), make("p", task.text), form);
-    section.append(card);
+    card.append(form);
     form.addEventListener("submit", async event => {
       event.preventDefault();
+      const currentEntry = entry;
       button.disabled = true;
       status.textContent = "Uploading…";
       try {
-        const photo = form.querySelector('input[type="file"]').files[0];
-        const result = await request({
-          action: "task", session, id: task.id, title: task.title,
-          caption: caption.value.trim(), photo: await photoData(photo)
+        await request({
+          action: "task", session: currentEntry.session, id: task.id, title: task.title,
+          caption: caption?.value.trim() || "", photo: await photoData(photo.files[0])
         });
-        form.reset();
-        status.textContent = result.already ? "Already submitted for review." : "Photo submitted for review.";
+        if (entry !== currentEntry) return;
+        if (!entry.completed.includes(task.id)) entry.completed.push(task.id);
+        saveEntry();
+        updateProgress();
+        form.replaceWith(make("p", "Photo submitted"));
       } catch (error) {
         status.textContent = error.message;
       } finally {
@@ -78,23 +129,18 @@ function displayLevel(index) {
   }
 }
 
-function openTasks() {
-  byId("entry").hidden = !endpoint || Boolean(session);
+function openChallenges() {
+  byId("entry").hidden = true;
   byId("play").hidden = false;
-  byId("levels").replaceChildren(...catalog.map((level, i) => {
-    const button = make("button", level.title);
-    button.onclick = () => displayLevel(i);
+  byId("tasks").hidden = true;
+  activeLevel = -1;
+  byId("levels").replaceChildren(...catalog.map((level, index) => {
+    const button = make("button", "");
+    button.setAttribute("aria-pressed", "false");
+    button.onclick = () => displayLevel(index);
     return button;
   }));
-  const switchEntry = make("button", "Use a different entry");
-  switchEntry.onclick = () => {
-    sessionStorage.removeItem("run-along-entry");
-    session = "";
-    openTasks();
-    byId("entry-status").textContent = "";
-  };
-  if (session && endpoint) byId("levels").append(switchEntry);
-  displayLevel(activeLevel);
+  updateProgress();
 }
 
 function pdfText(text) {
@@ -120,7 +166,7 @@ function downloadPDF() {
     "Take your photos offline. Return to the Challenges page to upload later.", ""
   ];
   for (const level of catalog) {
-    lines.push(level.title.toUpperCase());
+    lines.push(levelLabel(level).toUpperCase());
     if (level.rule) lines.push(...wrap(level.rule));
     if (!level.tasks.length) lines.push("Tasks coming soon.");
     for (const task of level.tasks) lines.push(...wrap("[ ] " + task.title + " - " + task.text), "");
@@ -159,18 +205,31 @@ function downloadPDF() {
   setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
 
+
+byId("different-entry").onclick = () => {
+  entry = null;
+  saveEntry();
+  byId("play").hidden = true;
+  byId("entry").hidden = false;
+  byId("entry-status").textContent = "";
+  byId("verify").elements.phone.focus();
+};
+
 byId("verify").addEventListener("submit", async event => {
   event.preventDefault();
+  const form = event.currentTarget;
+  const data = new FormData(form);
   const button = byId("continue");
   const status = byId("entry-status");
-  const data = new FormData(event.currentTarget);
+  if (!endpoint) return;
   button.disabled = true;
-  status.textContent = "Verifying and uploading…";
+  status.textContent = "Checking your number and uploading your tag photo…";
   try {
     const result = await request({action: "entry", phone: data.get("phone"), photo: await photoData(data.get("pass"))});
-    session = result.session;
-    sessionStorage.setItem("run-along-entry", session);
-    openTasks();
+    entry = {session: result.session, completed: result.completed || []};
+    saveEntry();
+    form.reset();
+    openChallenges();
   } catch (error) {
     status.textContent = error.message;
   } finally {
@@ -183,38 +242,19 @@ async function json(url) {
   if (!response.ok) throw new Error("Challenge details could not load. Please refresh.");
   return response.json();
 }
-function renderChallenges() {
-  if (!catalog || !byId("password-gate")?.hidden) return;
-  byId("download").disabled = false;
-  byId("download").onclick = downloadPDF;
-  byId("continue").disabled = !endpoint;
-  if (configReady && !endpoint) {
-    byId("catalog-status").textContent = "Photo uploads are opening soon.";
-  }
-  openTasks();
-}
-
-byId("unlock")?.addEventListener("submit", event => {
-  event.preventDefault();
-  const form = event.currentTarget;
-  const password = form.elements.password;
-  if (password.value.trim() !== "101010") {
-    byId("password-status").textContent = "Incorrect password. Try again.";
-    password.select();
-    return;
-  }
-  form.reset();
-  byId("password-gate").hidden = true;
-  byId("challenge-content").hidden = false;
-  renderChallenges();
-});
 
 try {
-  catalog = await json("challenge-questions.json");
-  renderChallenges();
-  ({submissionUrl: endpoint} = await json("challenge-config.json"));
-  configReady = true;
-  renderChallenges();
+  [catalog, {submissionUrl: endpoint}] = await Promise.all([
+    json("challenge-questions.json"), json("challenge-config.json")
+  ]);
+  byId("download").disabled = false;
+  byId("download").onclick = downloadPDF;
+  if (endpoint) {
+    byId("continue").disabled = false;
+    if (entry?.session && Array.isArray(entry.completed)) openChallenges();
+  } else {
+    byId("entry-status").textContent = "Challenge uploads are opening soon.";
+  }
 } catch (error) {
-  byId("catalog-status").textContent = error.message;
+  byId("entry-status").textContent = error.message;
 }
