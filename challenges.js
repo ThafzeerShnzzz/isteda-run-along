@@ -215,7 +215,7 @@ byId("enter-game").onclick = () => {
   byId("game-guide").hidden = true;
   byId("enter-game").hidden = true;
   byId("game-loading").hidden = false;
-  const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1150;
+  const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 4000;
   gameTimer = setTimeout(() => {
     byId("game-loading").hidden = true;
     byId("game-levels").hidden = false;
