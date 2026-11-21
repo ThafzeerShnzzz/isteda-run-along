@@ -8,6 +8,7 @@ const testingMode = true;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
+  if (entry && !entry.reviews) entry.completed = [];
 } catch {
   // A fresh entry can still be started.
 }
@@ -62,6 +63,7 @@ function updateProgress() {
     const button = byId("levels").children[index].querySelector("button");
     button.querySelector(".level-count").textContent = count + "/" + level.tasks.length;
   });
+  total += ["OPEN-03", "OPEN-04"].filter(id => entry.reviews?.[id] === "Winner").length * 4;
   byId("score").textContent = "Total points: " + total;
   if (activeLevel >= 0) {
     const level = catalog[activeLevel];
@@ -96,10 +98,15 @@ function displayLevel(index) {
     const references = byId("location-references");
     if (task.referencePhotos && references) card.append(references.content.cloneNode(true));
     section.append(card);
-    if (entry.completed.includes(task.id)) {
-      card.append(make("p", entry.preview ? "Test submission complete" : "Photo submitted"));
+    const review = entry.reviews?.[task.id];
+    if (entry.completed.includes(task.id) || review === "Pending") {
+      const label = entry.preview ? "Test submission complete" :
+        review === "Winner" ? "Award winner · 4 points" :
+        review === "Approved" ? "Approved" : "Submitted for review";
+      card.append(make("p", label));
       continue;
     }
+    if (review === "Rejected") card.append(make("p", "Photo rejected. You can submit a new photo."));
     const form = document.createElement("form");
     const label = make("label", task.id === "OPEN-05" ? "Attach screenshot or photo proof" : "Attach task photo");
     const photo = Object.assign(document.createElement("input"), {type: "file", accept: "image/*", required: true});
@@ -123,15 +130,22 @@ function displayLevel(index) {
       button.disabled = true;
       status.textContent = "Uploading…";
       try {
-        if (!currentEntry.preview) await request({
+        const result = currentEntry.preview ? null : await request({
           action: "task", session: currentEntry.session, id: task.id, title: task.title,
           caption: caption?.value.trim() || "", photo: await photoData(photo.files[0])
         });
         if (entry !== currentEntry) return;
-        if (!entry.completed.includes(task.id)) entry.completed.push(task.id);
+        if (entry.preview) {
+          if (!entry.completed.includes(task.id)) entry.completed.push(task.id);
+        } else if (result.reviews) {
+          entry.completed = result.completed;
+          entry.reviews = result.reviews;
+        } else {
+          entry.reviews = {...entry.reviews, [task.id]: "Pending"};
+        }
         if (!currentEntry.preview) saveEntry();
         updateProgress();
-        form.replaceWith(make("p", entry.preview ? "Test submission complete" : "Photo submitted"));
+        form.replaceWith(make("p", entry.preview ? "Test submission complete" : "Submitted for review"));
       } catch (error) {
         status.textContent = error.message;
       } finally {
@@ -143,6 +157,7 @@ function displayLevel(index) {
 
 function openChallenges() {
   byId("preview-notice").hidden = !entry.preview;
+  if (byId("refresh-score")) byId("refresh-score").hidden = entry.preview;
   byId("entry").hidden = true;
   byId("play").hidden = false;
   const tasks = byId("tasks");
@@ -370,7 +385,7 @@ byId("verify").addEventListener("submit", async event => {
     const result = preview ? null : await request({action: "entry", phone: data.get("phone"), photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
-    entry = {session: result?.session, completed: result?.completed || [], preview};
+    entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, preview};
     status.textContent = "";
     if (!preview) saveEntry();
     form.reset();
@@ -409,3 +424,29 @@ try {
 } catch (error) {
   byId("entry-status").textContent = error.message;
 }
+
+byId("refresh-score")?.addEventListener("click", async () => {
+  const currentEntry = entry;
+  if (!currentEntry?.session || currentEntry.preview) return;
+  const button = byId("refresh-score");
+  const status = byId("review-refresh-status");
+  button.disabled = true;
+  status.textContent = "";
+  try {
+    const result = await request({action: "status", session: currentEntry.session});
+    if (entry !== currentEntry) return;
+    entry.reviews = result.reviews;
+    entry.completed = result.completed;
+    saveEntry();
+    const selected = activeLevel;
+    if (selected >= 0) {
+      activeLevel = -1;
+      displayLevel(selected);
+    } else updateProgress();
+    status.textContent = "Review status updated.";
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
