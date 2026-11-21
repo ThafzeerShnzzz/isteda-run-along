@@ -25,8 +25,9 @@ function getPhotoRunDashboard() {
     if (!phone) continue;
     if (!players.has(phone)) players.set(phone, {phone, name: row.name || names.get(phone) || phone, entryPhoto: "", submissions: {}});
     const player = players.get(phone);
-    if (row.tab === "Challenge Entries") player.entryPhoto ||= row.photo;
-    else if (/^(L[123]|OPEN)-[0-9]{2}$/.test(row.task) && !player.submissions[row.task]) player.submissions[row.task] = row;
+    if (row.tab === "Challenge Entries") {
+      if (!player.entryPhoto) player.entryPhoto = row.photo;
+    } else if (/^(L[123]|OPEN)-[0-9]{2}$/.test(row.task) && !player.submissions[row.task]) player.submissions[row.task] = row;
   }
   for (const player of players.values()) player.score = photoRunScore_(player.submissions, levels);
   return {levels, players: [...players.values()].sort((a,b) => a.name.localeCompare(b.name) || a.phone.localeCompare(b.phone))};
