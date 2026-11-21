@@ -3,6 +3,7 @@ const make = (tag, text) => Object.assign(document.createElement(tag), {textCont
 const storageKey = "run-along-challenge-progress";
 let catalog, endpoint, activeLevel = -1;
 let gameTimer;
+let photoRunUnlocked = false;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
@@ -146,12 +147,6 @@ function openChallenges() {
   activeLevel = -1;
   byId("game-guide").hidden = false;
   byId("enter-game").hidden = false;
-  const passcodeForm = byId("game-passcode-form");
-  if (passcodeForm) {
-    passcodeForm.reset();
-    passcodeForm.hidden = true;
-    byId("game-passcode-status").textContent = "";
-  }
   byId("game-loading").hidden = true;
   byId("game-levels").hidden = true;
   byId("levels").replaceChildren(...catalog.map((level, index) => {
@@ -246,13 +241,6 @@ function downloadPDF() {
 }
 
 
-byId("enter-game").onclick = () => {
-  const form = byId("game-passcode-form");
-  if (!form) return;
-  form.hidden = false;
-  form.elements.passcode.focus();
-};
-
 byId("game-passcode-form")?.addEventListener("submit", event => {
   event.preventDefault();
   const form = event.currentTarget;
@@ -262,9 +250,16 @@ byId("game-passcode-form")?.addEventListener("submit", event => {
     passcode.select();
     return;
   }
+  photoRunUnlocked = true;
   form.reset();
   form.hidden = true;
   byId("game-passcode-status").textContent = "";
+  byId("entry").hidden = false;
+  if (endpoint && entry?.session && Array.isArray(entry.completed)) openChallenges();
+  else byId("verify").elements.phone.focus();
+});
+
+byId("enter-game").onclick = () => {
   byId("game-guide").hidden = true;
   byId("enter-game").hidden = true;
   byId("game-loading").hidden = false;
@@ -274,7 +269,7 @@ byId("game-passcode-form")?.addEventListener("submit", event => {
     byId("game-levels").hidden = false;
     byId("choose-level").focus();
   }, delay);
-});
+};
 
 byId("different-entry").onclick = () => {
   clearTimeout(gameTimer);
@@ -292,7 +287,7 @@ byId("verify").addEventListener("submit", async event => {
   const data = new FormData(form);
   const button = byId("continue");
   const status = byId("entry-status");
-  if (!endpoint) return;
+  if (!endpoint || !photoRunUnlocked) return;
   button.disabled = true;
   status.textContent = "Checking your number and uploading your admit card photo…";
   try {
@@ -322,7 +317,7 @@ try {
   byId("download").onclick = downloadPDF;
   if (endpoint) {
     byId("continue").disabled = false;
-    if (entry?.session && Array.isArray(entry.completed)) openChallenges();
+    if (photoRunUnlocked && entry?.session && Array.isArray(entry.completed)) openChallenges();
   } else {
     byId("entry-status").textContent = "Challenge uploads are opening soon.";
   }
