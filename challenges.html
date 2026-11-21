@@ -18,15 +18,17 @@ nav{margin-bottom:16px}
 main:has(#game-loading:not([hidden])) > :is(a,.photorun-brands,h1,p),
 main:has(#game-loading:not([hidden])) #different-entry{display:none}
 .game-loading:not([hidden]){min-height:65vh;display:grid;place-content:center;justify-items:center;background:transparent;border:0;padding:0;margin:0}
-.runners{display:flex;justify-content:center;gap:26px;width:100%;padding:10px 0 0}
-.runner{position:relative;display:block;width:55px;height:104px;animation:run-bounce .35s ease-in-out infinite alternate}
+.runners{display:flex;justify-content:center;gap:clamp(6px,3vw,24px);width:100%;padding:10px 0 0}
+.runner{position:relative;display:block;width:clamp(72px,25vw,104px);aspect-ratio:55/104;animation:run-bounce .35s ease-in-out infinite alternate}
 .runner:nth-child(2){animation-delay:-.22s}.runner:nth-child(3){animation-delay:-.11s}
 .runner>i{position:absolute;left:45%;top:2%;width:31%;aspect-ratio:1;border-radius:50%;background:#d39c70}
 .runner>b{position:absolute;z-index:1;left:23%;top:19%;width:63%;height:36%;display:grid;place-items:center;border-radius:18% 18% 9% 9%;background:var(--lime);transform:skew(-9deg)}
-.runner>b .photorun-forsa{width:92%;border-radius:2px}
+.runner>b .photorun-forsa{width:96%;aspect-ratio:430/150;border-radius:2px}
+.runner>b .photorun-forsa img{top:-400%}
 .runner>span{position:absolute;top:48%;left:43%;width:17%;height:43%;background:linear-gradient(#343930 40%,#d39c70 40% 83%,#f3f3ec 83%);border-radius:6px;transform-origin:50% 10%;animation:run-stride .35s ease-in-out infinite alternate}
 .runner>span:last-child{animation-direction:alternate-reverse}
-.runner::after{content:"";position:absolute;z-index:2;left:39%;top:35%;width:37%;height:9%;border-radius:999px;background:#d39c70;transform-origin:20% 50%;animation:run-stride .35s ease-in-out infinite alternate-reverse}
+.runner::after{content:"";position:absolute;z-index:0;left:4%;top:31%;width:32%;height:9%;border-radius:999px;background:#d39c70;transform-origin:90% 50%;animation:run-arm .35s ease-in-out infinite alternate-reverse}
+@keyframes run-arm{from{transform:rotate(-32deg)}to{transform:rotate(34deg)}}
 @keyframes run-bounce{to{transform:translateY(-7px)}}
 @keyframes run-stride{from{transform:rotate(47deg)}to{transform:rotate(-44deg)}}
 @media(prefers-reduced-motion:reduce){.runner,.runner>span,.runner::after{animation:none}}
