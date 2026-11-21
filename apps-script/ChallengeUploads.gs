@@ -3,13 +3,13 @@ function doPost(e) {
   const lock = LockService.getScriptLock();
   try {
     const input = JSON.parse(e.postData.contents);
-    if (!["entry", "task", "status", "finalize"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
+    if (!["entry", "verify", "task", "status", "finalize"].includes(input.action)) return reply_({ok: false, error: "Invalid action."});
     const config = PropertiesService.getScriptProperties().getProperties();
     const workbook = SpreadsheetApp.openById(config.SPREADSHEET_ID);
     const cache = CacheService.getScriptCache();
     let phone = "";
     let name = "";
-    if (input.action === "entry") {
+    if (input.action === "entry" || input.action === "verify") {
       phone = normalizePhone_(input.phone);
       name = safeCell_(input.name, 100);
       if (!name) return reply_({ok: false, error: "Enter your name."});
@@ -21,6 +21,7 @@ function doPost(e) {
       if (!numbers.some(row => normalizePhone_(row[0]) === phone)) {
         return reply_({ok: false, error: "This number is not on the RUN ALONG registration list."});
       }
+      if (input.action === "verify") return reply_({ok: true});
     } else {
       if (typeof input.session !== "string" || !/^[a-f0-9-]{36}$/.test(input.session)) return expired_();
       phone = cache.get("entry:" + input.session);
