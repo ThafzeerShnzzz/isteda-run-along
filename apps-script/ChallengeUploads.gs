@@ -8,8 +8,11 @@ function doPost(e) {
     const workbook = SpreadsheetApp.openById(config.SPREADSHEET_ID);
     const cache = CacheService.getScriptCache();
     let phone = "";
+    let name = "";
     if (input.action === "entry") {
       phone = normalizePhone_(input.phone);
+      name = safeCell_(input.name, 100);
+      if (!name) return reply_({ok: false, error: "Enter your name."});
       if (!/^\d{8,15}$/.test(phone)) return reply_({ok: false, error: "Enter your registered WhatsApp number."});
       const attendees = workbook.getSheetByName(config.REGISTRATION_TAB);
       const column = Number(config.WHATSAPP_COLUMN || 3);
@@ -39,16 +42,21 @@ function doPost(e) {
       tab = workbook.insertSheet(tabName);
       tab.appendRow(["Time", "WhatsApp", "Task ID", "Task", "Caption", "Photo", "Review"]);
     }
+    if (input.action === "entry" && !tab.getRange(1, 8).getValue()) tab.getRange(1, 8).setValue("Name");
     const taskId = input.action === "entry" ? "PASS" : input.id;
     const previous = tab.getLastRow() > 1
       ? tab.getRange(2, 2, tab.getLastRow() - 1, 6).getValues()
       : [];
-    const duplicate = previous.some(row => normalizePhone_(row[0]) === phone && row[1] === taskId && row[5] !== "Rejected");
+    const existing = previous.findIndex(row => normalizePhone_(row[0]) === phone && row[1] === taskId && row[5] !== "Rejected");
+    const duplicate = existing >= 0;
+    if (duplicate && input.action === "entry" && !tab.getRange(existing + 2, 8).getValue()) {
+      tab.getRange(existing + 2, 8).setValue(name);
+    }
     if (!duplicate) {
       const file = folder.createFile(Utilities.newBlob(photo, "image/jpeg", taskId + "-" + Utilities.getUuid() + ".jpg"));
       try {
         const title = input.action === "entry" ? "Armband" : safeCell_(input.title, 100);
-        tab.appendRow([new Date(), phone, taskId, title, safeCell_(input.caption, 160), file.getUrl(), "Pending"]);
+        tab.appendRow([new Date(), phone, taskId, title, safeCell_(input.caption, 160), file.getUrl(), "Pending", ...(input.action === "entry" ? [name] : [])]);
         SpreadsheetApp.flush();
       } catch (error) {
         file.setTrashed(true);
