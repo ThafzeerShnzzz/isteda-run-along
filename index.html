@@ -338,6 +338,93 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   .run-hero-heading h1{grid-area:1/1;min-width:0;font-size:clamp(72px,8vw,116px)!important}
   .run-hero-heading .lucky-draw-card{grid-area:1/2;width:100%;margin:0;padding:24px}
 }
+
+/* Pre-run gathering notification */
+.run-gathering-trigger {
+  position: fixed;
+  z-index: 30;
+  top: 50%;
+  right: max(14px, env(safe-area-inset-right));
+  transform: translateY(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: 700 10px/1.15 Arial, sans-serif;
+}
+.run-gathering-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+  box-shadow: 0 4px 20px #0006;
+  animation: run-gathering-ring 3s ease-in-out infinite;
+}
+.run-gathering-trigger[aria-expanded="true"] .run-gathering-icon,
+.run-gathering-trigger.is-read .run-gathering-icon { animation: none; }
+.run-gathering-icon::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: #ff393d;
+}
+.run-gathering-trigger.is-read .run-gathering-icon::after { display: none; }
+.run-gathering-caption {
+  max-width: 88px;
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.run-gathering-dialog {
+  width: min(340px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  padding: 24px;
+  border: 1px solid var(--lime);
+  border-radius: 16px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 12px 44px #0008;
+}
+.run-gathering-dialog::backdrop { background: #0009; }
+.run-gathering-dialog h2 { margin: 0 0 12px; color: var(--lime); font-size: 23px; }
+.run-gathering-dialog p { margin: 0 0 12px; line-height: 1.5; }
+.run-gathering-dialog button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--lime);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+@keyframes run-gathering-ring {
+  0%, 24%, 100% { transform: rotate(0); }
+  4%, 12%, 20% { transform: rotate(-9deg); }
+  8%, 16% { transform: rotate(9deg); }
+}
+@media (max-width: 700px) {
+  .run-gathering-trigger { right: max(8px, env(safe-area-inset-right)); }
+  .run-gathering-icon { width: 50px; height: 50px; }
+  .run-gathering-caption { max-width: 74px; padding: 4px 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .run-gathering-trigger .run-gathering-icon { animation: none; }
+}
 </style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="#join">JOIN THE CREW <span class="run-arrow" aria-hidden="true">↗</span></a></div></nav></header><main><section class="hero dark"><div class="wrap hero-content"><img src="elforsa-logo.png.png" alt="EL FORSA" class="elforsa-original-logo" loading="eager"/><div class="eyebrow" style="color:#eee"><span class="run-green-dot" aria-hidden="true"></span> ISTEDA COMMUNITY / DUBAI RUN / 2026</div><div class="run-hero-heading"><aside class="lucky-draw-card" id="lucky-draw" aria-labelledby="lucky-draw-title">
   <h2 id="lucky-draw-title">RUN ALONG Lucky Draw</h2>
   <p>Register for RUN ALONG and attend Dubai Run for a chance to win a special prize.</p>
@@ -393,5 +480,35 @@ async function submitRunAlong() {
   } finally {button.disabled=false;}
 }
 registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlong();});
+</script>
+
+<button type="button" id="run-gathering-trigger" class="run-gathering-trigger" aria-haspopup="dialog" aria-controls="run-gathering-dialog" aria-expanded="false">
+  <span class="run-gathering-icon" aria-hidden="true">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>
+    </svg>
+  </span>
+  <span class="run-gathering-caption">Tap to open the notification</span>
+</button>
+<dialog id="run-gathering-dialog" class="run-gathering-dialog" aria-labelledby="run-gathering-title">
+  <h2 id="run-gathering-title">Pre-Run Gathering</h2>
+  <p><strong>Tonight at 9 PM</strong><br>Zabeel Park, Gate No. 4 car park</p>
+  <p>Join us to hear the full Dubai Run Along plan!</p>
+  <form method="dialog"><button type="submit">Close</button></form>
+</dialog>
+<script>
+(() => {
+  const trigger = document.getElementById('run-gathering-trigger');
+  const dialog = document.getElementById('run-gathering-dialog');
+  trigger.addEventListener('click', () => {
+    dialog.showModal();
+    trigger.setAttribute('aria-expanded', 'true');
+    trigger.classList.add('is-read');
+  });
+  dialog.addEventListener('close', () => {
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus();
+  });
+})();
 </script>
 </body></html>
