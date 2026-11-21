@@ -198,7 +198,20 @@ function wrap(text) {
   return [...lines, line];
 }
 
-function downloadPDF() {
+async function downloadPDF() {
+  const button = byId("download");
+  button.disabled = true;
+  try {
+    await buildChallengePDF();
+  } catch {
+    byId("download-status").textContent = "The PDF could not be downloaded. Please try again.";
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function buildChallengePDF() {
+  byId("download-status").textContent = "";
   const lines = [
     "RUN ALONG. | ISTEDA x EL FORSA", "PhotoRun | Dubai Run Challenge Card", "",
     "Take your photos offline. Return to PhotoRun to upload after the run.", ""
@@ -213,9 +226,10 @@ function downloadPDF() {
   }
   const pages = [];
   for (let i = 0; i < lines.length; i += 45) pages.push(lines.slice(i, i + 45));
+  const referenceFigures = Array.from(byId("location-references")?.content.querySelectorAll("figure") || []);
   const objects = [
     "<< /Type /Catalog /Pages 2 0 R >>",
-    "<< /Type /Pages /Count " + pages.length + " /Kids [" + pages.map((_, i) => (4 + i * 2) + " 0 R").join(" ") + "] >>",
+    "",
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"
   ];
   for (const page of pages) {
@@ -226,6 +240,31 @@ function downloadPDF() {
       "<< /Length " + stream.length + " >>\nstream\n" + stream + "endstream"
     );
   }
+  const pageRefs = pages.map((_, i) => (4 + i * 2) + " 0 R");
+  for (const figure of referenceFigures) {
+    const source = figure.querySelector("img");
+    const caption = figure.querySelector("figcaption").textContent;
+    const bitmap = await createImageBitmap(await (await fetch(source.src)).blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    canvas.getContext("2d").drawImage(bitmap, 0, 0);
+    bitmap.close();
+    const jpeg = atob(canvas.toDataURL("image/jpeg", 0.82).split(",")[1]);
+    const hex = Array.from(jpeg, byte => byte.charCodeAt(0).toString(16).padStart(2, "0")).join("") + ">";
+    const imageId = objects.push("<< /Type /XObject /Subtype /Image /Width " + canvas.width +
+      " /Height " + canvas.height + " /ColorSpace /DeviceRGB /BitsPerComponent 8" +
+      " /Filter [/ASCIIHexDecode /DCTDecode] /Length " + hex.length + " >>\nstream\n" + hex + "\nendstream");
+    const height = Math.round(499 * canvas.height / canvas.width);
+    const stream = "BT /F1 16 Tf 48 790 Td (Level 2 Q4 - " + caption + ") Tj ET\n" +
+      "q 499 0 0 " + height + " 48 " + (750 - height) + " cm /ReferencePhoto Do Q\n";
+    const contentId = objects.push("<< /Length " + stream.length + " >>\nstream\n" + stream + "endstream");
+    const pageId = objects.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842]" +
+      " /Resources << /Font << /F1 3 0 R >> /XObject << /ReferencePhoto " + imageId +
+      " 0 R >> >> /Contents " + contentId + " 0 R >>");
+    pageRefs.push(pageId + " 0 R");
+  }
+  objects[1] = "<< /Type /Pages /Count " + pageRefs.length + " /Kids [" + pageRefs.join(" ") + "] >>";
   let pdf = "%PDF-1.4\n";
   const offsets = objects.map((object, i) => {
     const offset = pdf.length;
@@ -357,7 +396,7 @@ try {
   photoInput.disabled = testingMode;
   byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=locations"), json("challenge-config.json")
+    json("challenge-questions.json?v=numbered-questions"), json("challenge-config.json")
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
