@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><base target="_blank">
+<style>
+body{font:15px/1.5 system-ui,sans-serif;background:#11120f;color:#f3f3ec;margin:0;padding:20px}
+header,.controls,.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+h1,h2,h3,p{margin:0 0 8px}header{justify-content:space-between}
+article{padding:14px;margin:10px 0;background:#22251e;border:1px solid #43483d;border-radius:10px}
+button,input,select{font:inherit;padding:8px;border-radius:6px;border:1px solid #72776a}
+button{background:#d8ff36;color:#11120f;cursor:pointer}button:disabled{opacity:.55;cursor:default}
+input,select{background:#22251e;color:inherit}small{color:#c3c7bc}a{color:#d8ff36}
+img{display:block;max-width:100%;max-height:360px;margin:10px 0;object-fit:contain}
+section{margin-top:18px}summary{cursor:pointer;font-weight:700}
+</style></head>
+<body>
+<header><h1>Challenge review</h1><button id="refresh">Refresh</button></header>
+<div class="controls">
+<label>WhatsApp <input id="search" type="search" placeholder="Search by number"></label>
+<label>Show <select id="filter"><option value="pending">Needs review</option><option value="all">All entries</option></select></label>
+</div>
+<p id="status" role="status"></p><main id="entries"></main>
+<script>
+const byId = id => document.getElementById(id);
+const create = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
+let people = [];
+let busy = false;
+const expanded = new Set();
+
+function call(method, ...args) {
+  return new Promise((resolve, reject) => {
+    google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[method](...args);
+  });
+}
+
+async function update(operation) {
+  if (busy) return;
+  busy = true;
+  byId("status").textContent = "Working…";
+  document.querySelectorAll("button").forEach(button => button.disabled = true);
+  try {
+    people = await operation();
+    byId("status").textContent = "";
+  } catch (error) {
+    byId("status").textContent = error.message;
+  } finally {
+    busy = false;
+    byId("refresh").disabled = false;
+    render();
+  }
+}
+
+function card(row, kind) {
+  const item = create("article", "");
+  item.append(create("h3", kind === "pass" ? "Armband" : row.id + " · " + row.title));
+  item.append(create("p", row.status + (row.date ? " · " + row.date : "")));
+  if (row.caption) item.append(create("p", row.caption));
+  const controls = create("div", "");
+  controls.className = "actions";
+  const preview = create("button", "Preview photo");
+  const link = create("a", "Open in Drive");
+  if (/^https:\/\/drive\.google\.com\/file\/d\/[\w-]+\//.test(row.url)) {
+    link.href = row.url;
+    link.rel = "noopener noreferrer";
+    controls.append(preview, link);
+  }
+  const imageArea = create("div", "");
+  preview.onclick = async () => {
+    if (imageArea.querySelector("img")) {
+      imageArea.replaceChildren();
+      preview.textContent = "Preview photo";
+      return;
+    }
+    preview.disabled = true;
+    imageArea.textContent = "Loading photo…";
+    try {
+      const image = create("img", "");
+      image.alt = "Submitted " + (kind === "pass" ? "armband photo" : "task photo");
+      image.src = await call("previewChallengePhoto", kind, row.rowNumber, row.url);
+      imageArea.replaceChildren(image);
+      preview.textContent = "Hide photo";
+    } catch (error) {
+      imageArea.textContent = error.message;
+    } finally {
+      preview.disabled = false;
+    }
+  };
+  for (const [label, status] of [["Approve", "Approved"], ["Reject", "Rejected"], ["Return to pending", "Pending"]]) {
+    if (row.status === status) continue;
+    const button = create("button", label);
+    button.onclick = () => update(() => call("reviewChallengePhoto", kind, row.rowNumber, row.url, status));
+    controls.append(button);
+  }
+  item.append(controls, imageArea);
+  return item;
+}
+
+function render() {
+  const container = byId("entries");
+  const search = byId("search").value.replace(/\D/g, "");
+  const pendingOnly = byId("filter").value === "pending";
+  container.replaceChildren();
+  for (const person of people) {
+    if (!person.phone.includes(search)) continue;
+    const pending = [...person.passes, ...person.tasks].filter(row => row.status === "Pending").length;
+    if (pendingOnly && !pending) continue;
+    const section = create("section", "");
+    const group = create("details", "");
+    group.open = expanded.has(person.phone);
+    group.ontoggle = () => group.open ? expanded.add(person.phone) : expanded.delete(person.phone);
+    group.append(create("summary", person.phone + " · " + person.points + " pts · " + pending + " pending"));
+    group.append(create("p", (person.verified ? "Armband verified" : "Armband approval required for points") +
+      (person.levelTwoComplete ? " · Level 2 complete" : "")));
+    for (const row of person.passes) group.append(card(row, "pass"));
+    for (const row of person.tasks) group.append(card(row, "task"));
+    section.append(group);
+    container.append(section);
+  }
+  if (!container.children.length) container.append(create("p", "No matching entries."));
+}
+byId("search").oninput = render;
+byId("filter").onchange = render;
+byId("refresh").onclick = () => update(() => call("listChallengeReviews"));
+byId("refresh").click();
+</script></body></html>
