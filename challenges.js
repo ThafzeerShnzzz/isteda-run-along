@@ -1,6 +1,7 @@
 const byId = id => document.getElementById(id);
 const make = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
 let catalog, endpoint, activeLevel = 0;
+let configReady = false;
 let session = sessionStorage.getItem("run-along-entry") || "";
 
 async function request(data) {
@@ -53,6 +54,7 @@ function displayLevel(index) {
       form.append(captionLabel);
     }
     form.append(button, status);
+    form.hidden = !endpoint || !session;
     card.append(make("h3", task.title), make("p", task.text), form);
     section.append(card);
     form.addEventListener("submit", async event => {
@@ -77,7 +79,7 @@ function displayLevel(index) {
 }
 
 function openTasks() {
-  byId("entry").hidden = true;
+  byId("entry").hidden = !endpoint || Boolean(session);
   byId("play").hidden = false;
   byId("levels").replaceChildren(...catalog.map((level, i) => {
     const button = make("button", level.title);
@@ -88,11 +90,10 @@ function openTasks() {
   switchEntry.onclick = () => {
     sessionStorage.removeItem("run-along-entry");
     session = "";
-    byId("play").hidden = true;
-    byId("entry").hidden = false;
+    openTasks();
     byId("entry-status").textContent = "";
   };
-  byId("levels").append(switchEntry);
+  if (session && endpoint) byId("levels").append(switchEntry);
   displayLevel(activeLevel);
 }
 
@@ -182,17 +183,38 @@ async function json(url) {
   if (!response.ok) throw new Error("Challenge details could not load. Please refresh.");
   return response.json();
 }
-try {
-  catalog = await json("challenge-questions.json");
+function renderChallenges() {
+  if (!catalog || !byId("password-gate")?.hidden) return;
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
-  ({submissionUrl: endpoint} = await json("challenge-config.json"));
-  if (endpoint) {
-    byId("continue").disabled = false;
-    if (session) openTasks();
-  } else {
-    byId("entry-status").textContent = "Photo uploads are opening soon.";
+  byId("continue").disabled = !endpoint;
+  if (configReady && !endpoint) {
+    byId("catalog-status").textContent = "Photo uploads are opening soon.";
   }
+  openTasks();
+}
+
+byId("unlock")?.addEventListener("submit", event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const password = form.elements.password;
+  if (password.value.trim() !== "101010") {
+    byId("password-status").textContent = "Incorrect password. Try again.";
+    password.select();
+    return;
+  }
+  form.reset();
+  byId("password-gate").hidden = true;
+  byId("challenge-content").hidden = false;
+  renderChallenges();
+});
+
+try {
+  catalog = await json("challenge-questions.json");
+  renderChallenges();
+  ({submissionUrl: endpoint} = await json("challenge-config.json"));
+  configReady = true;
+  renderChallenges();
 } catch (error) {
   byId("catalog-status").textContent = error.message;
 }
