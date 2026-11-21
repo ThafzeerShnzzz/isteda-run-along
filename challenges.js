@@ -93,6 +93,8 @@ function displayLevel(index) {
   for (const task of level.tasks) {
     const card = document.createElement("article");
     card.append(make("h3", task.title), make("p", task.text));
+    const references = byId("location-references");
+    if (task.referencePhotos && references) card.append(references.content.cloneNode(true));
     section.append(card);
     if (entry.completed.includes(task.id)) {
       card.append(make("p", entry.preview ? "Test submission complete" : "Photo submitted"));
@@ -355,7 +357,7 @@ try {
   photoInput.disabled = testingMode;
   byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=easy-mode"), json("challenge-config.json")
+    json("challenge-questions.json?v=locations"), json("challenge-config.json")
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
