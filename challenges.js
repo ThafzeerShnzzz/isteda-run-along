@@ -318,16 +318,22 @@ byId("verify").addEventListener("submit", async event => {
   const status = byId("entry-status");
   if (!endpoint || !photoRunUnlocked) return;
   button.disabled = true;
+  form.setAttribute("aria-busy", "true");
+  const loadingStarted = performance.now();
   status.textContent = "Checking your number and uploading your admit card photo…";
   try {
     const result = await request({action: "entry", phone: data.get("phone"), photo: await photoData(data.get("pass"))});
+    const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
+    if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
     entry = {session: result.session, completed: result.completed || []};
+    status.textContent = "";
     saveEntry();
     form.reset();
     openChallenges();
   } catch (error) {
     status.textContent = error.message;
   } finally {
+    form.removeAttribute("aria-busy");
     button.disabled = false;
   }
 });
