@@ -259,20 +259,49 @@ byId("game-passcode-form")?.addEventListener("submit", event => {
   else byId("verify").elements.phone.focus();
 });
 
+function showGameRules() {
+  clearTimeout(gameTimer);
+  byId("game-loading").hidden = true;
+  byId("game-levels").hidden = true;
+  byId("game-guide").hidden = false;
+  byId("enter-game").hidden = false;
+  byId("enter-game").focus();
+}
+
+function showGameLevels() {
+  byId("game-guide").hidden = true;
+  byId("enter-game").hidden = true;
+  byId("game-loading").hidden = true;
+  byId("game-levels").hidden = false;
+  byId("choose-level").focus();
+}
+
+window.addEventListener("popstate", event => {
+  if (!photoRunUnlocked || !entry || byId("play").hidden) return;
+  clearTimeout(gameTimer);
+  if (event.state?.photoRunScreen === "levels") showGameLevels();
+  else showGameRules();
+});
+
+byId("back-to-rules")?.addEventListener("click", () => {
+  if (history.state?.photoRunScreen === "levels") history.back();
+  else showGameRules();
+});
+
 byId("enter-game").onclick = () => {
+  if (history.state?.photoRunScreen !== "levels") {
+    history.pushState({photoRunScreen: "levels"}, "");
+  }
   byId("game-guide").hidden = true;
   byId("enter-game").hidden = true;
   byId("game-loading").hidden = false;
   const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 4000;
-  gameTimer = setTimeout(() => {
-    byId("game-loading").hidden = true;
-    byId("game-levels").hidden = false;
-    byId("choose-level").focus();
-  }, delay);
+  gameTimer = setTimeout(showGameLevels, delay);
 };
 
 byId("different-entry").onclick = () => {
   clearTimeout(gameTimer);
+  if (history.state?.photoRunScreen === "levels") history.back();
   entry = null;
   saveEntry();
   byId("play").hidden = true;
