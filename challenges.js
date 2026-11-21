@@ -56,8 +56,9 @@ function updateProgress() {
   let total = 0;
   catalog.forEach((level, index) => {
     const count = levelCount(level);
-    total += count * (level.points || 0);
-    byId("levels").children[index].textContent = levelLabel(level) + " · " + count + "/" + level.tasks.length;
+    total += Math.min(count, level.scoringLimit ?? count) * (level.points || 0);
+    const button = byId("levels").children[index].querySelector("button");
+    button.querySelector(".level-count").textContent = count + "/" + level.tasks.length;
   });
   byId("score").textContent = "Total points: " + total;
   if (activeLevel >= 0) {
@@ -71,14 +72,15 @@ function displayLevel(index) {
   const level = catalog[index];
   const section = byId("tasks");
   section.hidden = false;
-  [...byId("levels").children].forEach((button, i) => {
-    button.setAttribute("aria-pressed", String(i === index));
+  [...byId("levels").children].forEach((tile, i) => {
+    tile.querySelector("button").setAttribute("aria-pressed", String(i === index));
   });
   const progress = make("p", "");
   progress.id = "level-progress";
   progress.setAttribute("role", "status");
   section.replaceChildren(make("h2", levelLabel(level)), progress);
   updateProgress();
+  if (level.scoringLimit) section.append(make("p", "Complete any 3 of 5 for up to " + level.scoringLimit * level.points + " points."));
   if (level.rule) section.append(make("p", level.rule));
   if (!level.tasks.length) section.append(make("p", "Tasks coming soon."));
   for (const task of level.tasks) {
@@ -140,10 +142,20 @@ function openChallenges() {
   byId("game-loading").hidden = true;
   byId("game-levels").hidden = true;
   byId("levels").replaceChildren(...catalog.map((level, index) => {
-    const button = make("button", "");
+    const tile = make("div", "");
+    const button = make("button", level.title);
+    const count = make("span", "");
+    count.className = "level-count";
+    button.append(count);
     button.setAttribute("aria-pressed", "false");
     button.onclick = () => displayLevel(index);
-    return button;
+    tile.append(button);
+    if (level.points) {
+      tile.className = "scored-level";
+      const rate = make("small", level.points + (level.points === 1 ? " point per challenge" : " points per challenge"));
+      tile.append(rate);
+    }
+    return tile;
   }));
   updateProgress();
 }
@@ -172,6 +184,7 @@ function downloadPDF() {
   ];
   for (const level of catalog) {
     lines.push(levelLabel(level).toUpperCase());
+    if (level.scoringLimit) lines.push("Complete any 3 of 5 for up to " + level.scoringLimit * level.points + " points.");
     if (level.rule) lines.push(...wrap(level.rule));
     if (!level.tasks.length) lines.push("Tasks coming soon.");
     for (const task of level.tasks) lines.push(...wrap("[ ] " + task.title + " - " + task.text), "");
