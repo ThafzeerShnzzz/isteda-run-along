@@ -89,7 +89,7 @@ function displayLevel(index) {
       continue;
     }
     const form = document.createElement("form");
-    const label = make("label", "Attach task photo");
+    const label = make("label", task.id === "OPEN-05" ? "Attach screenshot or photo proof" : "Attach task photo");
     const photo = Object.assign(document.createElement("input"), {type: "file", accept: "image/*", required: true});
     const button = make("button", "Submit Photo");
     const status = make("output", "");
@@ -163,7 +163,7 @@ function wrap(text) {
 function downloadPDF() {
   const lines = [
     "RUN ALONG. | ISTEDA x EL FORSA", "PhotoRun | Dubai Run Challenge Card", "",
-    "Take your photos offline. Return to the Challenges page to upload later.", ""
+    "Take your photos offline. Return to PhotoRun to upload after the run.", ""
   ];
   for (const level of catalog) {
     lines.push(levelLabel(level).toUpperCase());
