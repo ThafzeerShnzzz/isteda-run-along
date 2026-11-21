@@ -12,17 +12,17 @@ function doPost(e) {
     let name = "";
     if (input.action === "entry" || input.action === "verify") {
       phone = normalizePhone_(input.phone);
-      name = safeCell_(input.name, 100);
-      if (!name) return reply_({ok: false, error: "Enter your name."});
       if (!/^\d{8,15}$/.test(phone)) return reply_({ok: false, error: "Enter your registered WhatsApp number."});
       const attendees = workbook.getSheetByName(config.REGISTRATION_TAB);
       const column = Number(config.WHATSAPP_COLUMN || 3);
       const rows = attendees.getLastRow();
-      const numbers = rows > 0 ? attendees.getRange(1, column, rows, 1).getDisplayValues() : [];
-      if (!numbers.some(row => normalizePhone_(row[0]) === phone)) {
+      const registered = rows > 0 ? attendees.getRange(1, 1, rows, Math.max(column, 2)).getDisplayValues() : [];
+      const member = registered.find(row => normalizePhone_(row[column - 1]) === phone);
+      if (!member) {
         return reply_({ok: false, error: "This number is not on the RUN ALONG registration list."});
       }
       if (input.action === "verify") return reply_({ok: true});
+      name = safeCell_(member[1], 100);
     } else {
       if (typeof input.session !== "string" || !/^[a-f0-9-]{36}$/.test(input.session)) return expired_();
       phone = cache.get("entry:" + input.session);
