@@ -56,6 +56,8 @@ function levelCount(level) {
 }
 
 function updateProgress() {
+  byId("final-submit").hidden = Boolean(entry.finalized);
+  byId("final-state").textContent = entry.finalized ? (entry.preview ? "Test submission complete." : "Entry submitted.") : "";
   let total = 0;
   catalog.forEach((level, index) => {
     const count = levelCount(level);
@@ -107,6 +109,7 @@ function displayLevel(index) {
       continue;
     }
     if (review === "Rejected") card.append(make("p", "Photo rejected. You can submit a new photo."));
+    if (entry.finalized) continue;
     const form = document.createElement("form");
     const label = make("label", task.id === "OPEN-05" ? "Attach screenshot or photo proof" : "Attach task photo");
     const photo = Object.assign(document.createElement("input"), {type: "file", accept: "image/*", required: true});
@@ -393,7 +396,7 @@ byId("verify").addEventListener("submit", async event => {
     const result = preview ? null : await request({action: "entry", phone: data.get("phone"), name, photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
-    entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, preview};
+    entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, finalized: Boolean(result?.finalized), preview};
     status.textContent = "";
     if (!preview) saveEntry();
     form.reset();
@@ -445,6 +448,7 @@ byId("refresh-score")?.addEventListener("click", async () => {
     if (entry !== currentEntry) return;
     entry.reviews = result.reviews;
     entry.completed = result.completed;
+    entry.finalized = Boolean(result.finalized);
     saveEntry();
     const selected = activeLevel;
     if (selected >= 0) {
@@ -454,6 +458,29 @@ byId("refresh-score")?.addEventListener("click", async () => {
     status.textContent = "Review status updated.";
   } catch (error) {
     status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+byId("final-submit").addEventListener("click", async () => {
+  const current = entry;
+  if (!current || current.finalized || byId("tasks").querySelector("form button:disabled")) return;
+  if (!window.confirm("Submit your PhotoRun entry? You cannot add photos after submitting.")) return;
+  const button = byId("final-submit");
+  button.disabled = true;
+  try {
+    if (!current.preview) await request({action: "finalize", session: current.session});
+    if (entry !== current) return;
+    current.finalized = true;
+    if (!current.preview) saveEntry();
+    const selected = activeLevel;
+    if (selected >= 0) {
+      activeLevel = -1;
+      displayLevel(selected);
+    } else updateProgress();
+  } catch (error) {
+    byId("final-state").textContent = error.message;
   } finally {
     button.disabled = false;
   }
