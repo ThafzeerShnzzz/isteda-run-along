@@ -22,7 +22,6 @@ function doPost(e) {
       if (!numbers.some(row => normalizePhone_(row[0]) === phone)) {
         return reply_({ok: false, error: "This number is not on the RUN ALONG registration list."});
       }
-      if (photoRunArchived_(workbook, phone)) return archivedPhotoRunReply_();
       if (input.action === "verify") return reply_({ok: true});
     } else {
       if (typeof input.session !== "string" || !/^[a-f0-9-]{36}$/.test(input.session)) return expired_();
@@ -79,6 +78,7 @@ function doPost(e) {
       }
     }
     if (input.action === "entry") {
+      restorePhotoRunEntry_(tab, phone);
       const session = Utilities.getUuid();
       cache.put("entry:" + session, phone, 21600);
       return reply_({ok: true, session, ...reviewProgress_(workbook, phone)});
@@ -214,4 +214,17 @@ function photoRunArchived_(workbook, phone) {
 
 function archivedPhotoRunReply_() {
   return reply_({ok: false, error: "This PhotoRun entry has been archived. Contact the organizer to restore it."});
+}
+
+function restorePhotoRunEntry_(sheet, phone) {
+  if (sheet.getLastRow() < 2) return;
+  const rows = sheet.getRange(2, 2, sheet.getLastRow() - 1, 9).getDisplayValues();
+  const archivedCells = [];
+  rows.forEach((row, index) => {
+    if (normalizePhone_(row[0]) === phone && row[8]) archivedCells.push("J" + (index + 2));
+  });
+  if (archivedCells.length) {
+    sheet.getRangeList(archivedCells).clearContent();
+    SpreadsheetApp.flush();
+  }
 }
