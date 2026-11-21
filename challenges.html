@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Challenges | RUN ALONG.</title><style>
+<title>PhotoRun | RUN ALONG.</title><style>
 :root{color-scheme:dark;--lime:#d8ff36;--ink:#11120f;--panel:#20231d;--text:#f3f3ec}
 *{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--text);font:1rem/1.5 system-ui,sans-serif}
 main{max-width:760px;margin:auto;padding:28px 20px 64px}a{color:var(--lime)}h1{font-size:clamp(2.5rem,9vw,5rem);line-height:1;margin:.35em 0;letter-spacing:-.07em}h2,h3,p{margin-top:0}
@@ -10,17 +10,17 @@ button:disabled{opacity:.5;cursor:default}label{display:block;margin:12px 0}inpu
 nav{display:flex;gap:8px;flex-wrap:wrap}nav button[aria-pressed="false"]{background:var(--panel);color:var(--text);border:1px solid #686e60}
 small,.muted{color:#c2c7bb}output{display:block;margin:10px 0}output:empty{display:none}
 nav{margin-bottom:16px}
-</style><script type="module" src="challenges.js?v=photo-entry-live"></script></head>
-<body><main><a href="./">← RUN ALONG.</a><h1>Challenges<span style="color:var(--lime)">.</span></h1>
+</style><script type="module" src="challenges.js?v=photorun"></script></head>
+<body><main><a href="./">← RUN ALONG.</a><h1>PhotoRun<span style="color:var(--lime)">.</span></h1>
 <p>ISTEDA × EL FORSA · Dubai Run</p>
-<section id="entry"><h2>Enter the Challenges</h2><form id="verify">
+<section id="entry"><h2>Enter PhotoRun</h2><form id="verify">
 <label>Registered WhatsApp number<input name="phone" type="tel" autocomplete="tel" placeholder="05X XXX XXXX" required></label>
 <label>Upload your RUN ALONG tag photo<input name="pass" type="file" accept="image/*" required></label>
-<button id="continue" disabled>Enter Challenges</button><output id="entry-status" role="status"></output>
+<button id="continue" disabled>Enter PhotoRun</button><output id="entry-status" role="status"></output>
 </form></section>
 <div id="play" hidden>
 <section aria-labelledby="challenge-guide">
-<h2 id="challenge-guide">How the challenges work</h2>
+<h2 id="challenge-guide">How PhotoRun works</h2>
 <p>ISTEDA is bringing photo challenges to Dubai Run so you can meet other runners and have some fun along the route. Take part and see how high you can climb on the ISTEDA RUN ALONG challenge leaderboard.</p>
 <ol>
 <li>Choose one of the three levels and open a challenge.</li>
@@ -29,7 +29,7 @@ nav{margin-bottom:16px}
 </ol>
 <h3>Download before the run</h3>
 <p>Mobile data may be unreliable during Dubai Run. Save the challenge PDF before you start, take your photos offline, and upload them here right after the run when you’re back online.</p>
-<button id="download" type="button" disabled>Download Challenge PDF</button>
+<button id="download" type="button" disabled>Download PhotoRun PDF</button>
 </section>
 <p id="score" role="status"></p>
 <nav id="levels" aria-label="Challenge levels"></nav>
