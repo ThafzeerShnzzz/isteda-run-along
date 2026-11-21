@@ -9,20 +9,20 @@ button{background:var(--lime);color:var(--ink);border:0;border-radius:8px;paddin
 button:disabled{opacity:.5;cursor:default}label{display:block;margin:12px 0}input{display:block;max-width:100%;margin:6px 0;background:var(--ink);color:inherit;border:1px solid #686e60;padding:10px;border-radius:6px;font:inherit}
 nav{display:flex;gap:8px;flex-wrap:wrap}nav button[aria-pressed="false"]{background:var(--panel);color:var(--text);border:1px solid #686e60}
 small,.muted{color:#c2c7bb}output{display:block;margin:10px 0}output:empty{display:none}
-</style><script type="module" src="challenges.js?v=entry-password"></script></head>
+nav{margin-bottom:16px}
+</style><script type="module" src="challenges.js?v=photo-entry"></script></head>
 <body><main><a href="./">← RUN ALONG.</a><h1>Challenges<span style="color:var(--lime)">.</span></h1>
 <p>ISTEDA × EL FORSA · Dubai Run</p>
-<section id="password-gate"><h2>Enter the challenge password</h2><form id="unlock">
-<label>Password<input name="password" type="password" inputmode="numeric" autocomplete="off" required></label>
-<button type="submit">Enter Challenges</button><output id="password-status" role="status"></output></form></section>
-<div id="challenge-content" hidden>
-<p>Save the PDF before the run. Take your photos offline and upload them when you’re back online.</p>
-<button id="download" type="button" disabled>Download Challenge PDF</button>
-<p id="catalog-status" role="status"></p>
-<section id="entry" hidden><h2>Verify your entry</h2><form id="verify">
+<section id="entry"><h2>Enter the Challenges</h2><form id="verify">
 <label>Registered WhatsApp number<input name="phone" type="tel" autocomplete="tel" placeholder="05X XXX XXXX" required></label>
-<label>Photo wearing your ISTEDA RUN ALONG armband<input name="pass" type="file" accept="image/*" required></label>
-<p class="muted">The organizing team reviews your armband and task photos privately.</p>
-<button id="continue" disabled>Continue to Challenges</button><output id="entry-status" role="status"></output></form></section>
-<div id="play" hidden><nav id="levels" aria-label="Challenge levels"></nav><section id="tasks" aria-label="Tasks"></section></div>
-</div></main></body></html>
+<label>Upload your RUN ALONG tag photo<input name="pass" type="file" accept="image/*" required></label>
+<button id="continue" disabled>Enter Challenges</button><output id="entry-status" role="status"></output>
+</form></section>
+<div id="play" hidden>
+<p id="score" role="status"></p>
+<nav id="levels" aria-label="Challenge levels"></nav>
+<section id="tasks" aria-label="Challenges" hidden></section>
+<button id="download" type="button" disabled>Download Challenge PDF</button>
+<button id="different-entry" type="button">Use a different entry</button>
+</div>
+</main></body></html>
