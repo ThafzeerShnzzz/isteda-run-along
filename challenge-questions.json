@@ -11,6 +11,21 @@
         "id": "L1-02",
         "title": "10-Runner Selfie",
         "text": "Take a group selfie with 10 other runners."
+      },
+      {
+        "id": "L1-03",
+        "title": "Finish Line Photo",
+        "text": "Take a photo with the Dubai Run finish sign visible."
+      },
+      {
+        "id": "L1-04",
+        "title": "Dubai Run Bib Selfie",
+        "text": "Take a selfie with your own Dubai Run bib visible."
+      },
+      {
+        "id": "L1-05",
+        "title": "Matching Colours",
+        "text": "Find a runner wearing the same shoe colour as you. Take a photo showing both pairs."
       }
     ],
     "points": 1
@@ -45,8 +60,7 @@
         "text": "Find someone with a photo from a previous Dubai Run. Recreate their old pose together and upload the two shots side by side."
       }
     ],
-    "rule": "Submit any 3 of these 5 tasks.",
-    "points": 3
+    "points": 2
   },
   {
     "title": "Level 3",
@@ -55,9 +69,30 @@
         "id": "L3-01",
         "title": "Triple 7",
         "text": "Find someone whose bib contains three 7s anywhere in the number. Take a selfie with them holding up seven fingers."
+      },
+      {
+        "id": "L3-02",
+        "title": "Three Running Crews",
+        "text": "Take one photo with runners from three different running groups. Name the groups in your caption.",
+        "caption": true
+      },
+      {
+        "id": "L3-03",
+        "title": "Dubai Then and Now",
+        "text": "Recreate a pose from an older Dubai Run photo with the same Dubai landmark in the background. Submit the photos side by side."
+      },
+      {
+        "id": "L3-04",
+        "title": "The Skyline Lineup",
+        "text": "Take a group photo with five other runners and two recognizable Dubai landmarks in the same frame."
+      },
+      {
+        "id": "L3-05",
+        "title": "Four Shoe Brands",
+        "text": "Find four runners wearing four different shoe brands. Take one photo showing all four pairs."
       }
     ],
-    "points": 5
+    "points": 4
   },
   {
     "title": "Open Challenge",
@@ -71,6 +106,26 @@
         "id": "OPEN-02",
         "title": "Vyshu’s Crying Face",
         "text": "Get Vyshu to do their best fake crying face and take a photo together."
+      }
+    ]
+  },
+  {
+    "title": "PhotoRun Awards",
+    "tasks": [
+      {
+        "id": "OPEN-03",
+        "title": "Best Photography Award · 4 points",
+        "text": "Submit any photo related to Dubai Run. The winning photo earns 4 points."
+      },
+      {
+        "id": "OPEN-04",
+        "title": "Best Selfie · 4 points",
+        "text": "Take a selfie with something related to Dubai. The winning selfie earns 4 points."
+      },
+      {
+        "id": "OPEN-05",
+        "title": "Most Calories Burned",
+        "text": "Upload a screenshot or other proof showing your total calories burned on Dubai Run day."
       }
     ]
   }
