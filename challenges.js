@@ -377,7 +377,7 @@ byId("verify").addEventListener("submit", async event => {
   const data = new FormData(form);
   const button = byId("continue");
   const status = byId("entry-status");
-  if ((!endpoint && !testingMode) || !photoRunUnlocked) return;
+  if (!endpoint || !photoRunUnlocked) return;
   button.disabled = true;
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
@@ -391,9 +391,12 @@ byId("verify").addEventListener("submit", async event => {
   }
   const photo = data.get("pass");
   const preview = testingMode && !photo?.size;
-  status.textContent = preview ? "Opening the test game…" : "Checking your number and uploading your admit card photo…";
+  status.textContent = preview ? "Checking your RUN ALONG registration…" : "Checking your number and uploading your admit card photo…";
   try {
-    const result = preview ? null : await request({action: "entry", phone: data.get("phone"), name, photo: await photoData(photo)});
+    const phone = data.get("phone");
+    const result = preview
+      ? await request({action: "verify", phone, name})
+      : await request({action: "entry", phone, name, photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
     entry = {session: result?.session, completed: result?.reviews ? result.completed : [], reviews: result?.reviews || {}, finalized: Boolean(result?.finalized), preview};
@@ -426,7 +429,7 @@ try {
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
-  if (endpoint || testingMode) {
+  if (endpoint) {
     byId("continue").disabled = false;
     if (photoRunUnlocked && entry?.session && Array.isArray(entry.completed)) openChallenges();
   } else {
