@@ -146,6 +146,12 @@ function openChallenges() {
   activeLevel = -1;
   byId("game-guide").hidden = false;
   byId("enter-game").hidden = false;
+  const passcodeForm = byId("game-passcode-form");
+  if (passcodeForm) {
+    passcodeForm.reset();
+    passcodeForm.hidden = true;
+    byId("game-passcode-status").textContent = "";
+  }
   byId("game-loading").hidden = true;
   byId("game-levels").hidden = true;
   byId("levels").replaceChildren(...catalog.map((level, index) => {
@@ -241,6 +247,24 @@ function downloadPDF() {
 
 
 byId("enter-game").onclick = () => {
+  const form = byId("game-passcode-form");
+  if (!form) return;
+  form.hidden = false;
+  form.elements.passcode.focus();
+};
+
+byId("game-passcode-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const passcode = form.elements.passcode;
+  if (passcode.value.trim() !== "1010") {
+    byId("game-passcode-status").textContent = "Incorrect passcode. Try again.";
+    passcode.select();
+    return;
+  }
+  form.reset();
+  form.hidden = true;
+  byId("game-passcode-status").textContent = "";
   byId("game-guide").hidden = true;
   byId("enter-game").hidden = true;
   byId("game-loading").hidden = false;
@@ -250,7 +274,7 @@ byId("enter-game").onclick = () => {
     byId("game-levels").hidden = false;
     byId("choose-level").focus();
   }, delay);
-};
+});
 
 byId("different-entry").onclick = () => {
   clearTimeout(gameTimer);
