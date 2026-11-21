@@ -1,5 +1,18 @@
 [
   {
+    "title": "Common Question",
+    "kind": "common",
+    "points": 2,
+    "scoringLimit": 1,
+    "tasks": [
+      {
+        "id": "OPEN-06",
+        "title": "ISTEDA Wristband Selfie",
+        "text": "Upload a selfie wearing your ISTEDA wristband. Make sure the wristband is clearly visible."
+      }
+    ]
+  },
+  {
     "title": "Level 1 (Easy Mode)",
     "tasks": [
       {
