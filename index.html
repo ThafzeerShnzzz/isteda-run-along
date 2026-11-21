@@ -330,7 +330,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 #photorun-ranking-status{margin:10px 0 0;color:#c4cfbb;font-size:.9rem}
 #photorun-ranking-status:empty{display:none}
 .photorun-board-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.photorun-board h2{margin:0;color:#d8ff36}
+.photorun-board h2{margin:0;color:#d8ff36;font-size:clamp(1.6rem,4vw,2.85rem);line-height:1.05}
+.photorun-hero-card h2{font-size:clamp(1.65rem,4vw,2.6rem)}
+.photorun-hero-card .photorun-play,.run-gathering-dialog .photorun-play{display:inline-block;margin:4px 0 10px;padding:11px 15px;border-radius:8px;background:#d8ff36;color:#11140f;font-size:14px;font-weight:800;text-decoration:none}
 .photorun-board button{background:#d8ff36;color:#10140f;border:0;border-radius:7px;padding:8px 14px;font:inherit;font-weight:700;cursor:pointer}
 .photorun-board table{width:100%;table-layout:fixed;border-collapse:collapse;margin-top:14px;text-align:left}
 .photorun-board th,.photorun-board td{padding:9px 5px;border-bottom:1px solid #434c38;overflow-wrap:anywhere}
@@ -338,18 +340,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .photorun-board td:nth-child(3){color:#d8ff36;font-weight:800}
 @media(max-width:540px){.photorun-board{margin:16px auto 24px;padding:12px}.photorun-board th,.photorun-board td{font-size:12px}}
 </style>
-<style id="lucky-draw-style">
+<style id="photorun-hero-style">
 .run-registration-area{display:flex;align-items:center;max-width:740px;margin-top:24px}
 .run-registration-area .run-hero-actions{flex:1 1 auto;margin-top:0;min-width:0}
-.lucky-draw-card{box-sizing:border-box;width:min(100%,360px);margin:0 0 22px;padding:20px 22px;border:1px solid #ffffff30;border-left:2px solid #d8ff36;border-radius:6px;background:#14191d;color:#f3f3ed}
-.lucky-draw-card h2{margin:0 0 8px;color:#fff;font:700 22px/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.02em}
-.lucky-draw-card p{margin:0 0 14px;color:#d2d6d8;font-size:14px;line-height:1.55}
-.lucky-draw-card a{display:inline-block;color:#d8ff36;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
-.lucky-draw-card a:focus-visible{outline:2px solid #d8ff36;outline-offset:4px}
+.photorun-hero-card{box-sizing:border-box;width:min(100%,360px);margin:0 0 22px;padding:20px 22px;border:1px solid #ffffff30;border-left:2px solid #d8ff36;border-radius:6px;background:#14191d;color:#f3f3ed}
+.photorun-hero-card h2{margin:0 0 8px;color:#fff;font:700 22px/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.02em}
+.photorun-hero-card p{margin:0 0 14px;color:#d2d6d8;font-size:14px;line-height:1.55}
+.photorun-hero-card a{display:inline-block;color:#d8ff36;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.photorun-hero-card a:focus-visible{outline:2px solid #d8ff36;outline-offset:4px}
 @media(min-width:1100px){
   .run-hero-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,340px);gap:clamp(24px,4vw,56px);align-items:center}
   .run-hero-heading h1{grid-area:1/1;min-width:0;font-size:clamp(72px,8vw,116px)!important}
-  .run-hero-heading .lucky-draw-card{grid-area:1/2;width:100%;margin:0;padding:24px}
+  .run-hero-heading .photorun-hero-card{grid-area:1/2;width:100%;margin:0;padding:24px}
 }
 
 /* Pre-run gathering notification */
@@ -438,10 +440,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 @media (prefers-reduced-motion: reduce) {
   .run-gathering-trigger .run-gathering-icon { animation: none; }
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="#join">JOIN THE CREW <span class="run-arrow" aria-hidden="true">↗</span></a></div></nav></header><main><section class="hero dark"><div class="wrap hero-content"><img src="elforsa-logo.png.png" alt="EL FORSA" class="elforsa-original-logo" loading="eager"/><div class="eyebrow" style="color:#eee"><span class="run-green-dot" aria-hidden="true"></span> ISTEDA COMMUNITY / DUBAI RUN / 2026</div><div class="run-hero-heading"><aside class="lucky-draw-card" id="lucky-draw" aria-labelledby="lucky-draw-title">
-  <h2 id="lucky-draw-title">RUN ALONG Lucky Draw</h2>
-  <p>Register for RUN ALONG and attend Dubai Run for a chance to win a special prize.</p>
-  <a href="#registration">Register for RUN ALONG <span aria-hidden="true">↗</span></a>
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="#join">JOIN THE CREW <span class="run-arrow" aria-hidden="true">↗</span></a></div></nav></header><main><section class="hero dark"><div class="wrap hero-content"><img src="elforsa-logo.png.png" alt="EL FORSA" class="elforsa-original-logo" loading="eager"/><div class="eyebrow" style="color:#eee"><span class="run-green-dot" aria-hidden="true"></span> ISTEDA COMMUNITY / DUBAI RUN / 2026</div><div class="run-hero-heading"><aside class="photorun-hero-card" id="photorun-competition" aria-labelledby="photorun-hero-title">
+  <h2 id="photorun-hero-title">PhotoRun Competition</h2>
+  <p>Take on the Dubai Run photo challenges, earn points, and climb the scoreboard.</p>
+  <a class="photorun-play" href="challenges.html">Play PhotoRun Challenge</a>
 </aside><h1>ONE CREW.<br/>ONE RUN.<br/><em>ALL VIBES.</em></h1></div><div class="hero-bottom"><p class="lead">We bring the people. You bring the energy.<br/>A night of connection. A morning in motion.</p><a class="pill lime" href="#join">RUN WITH ISTEDA <span class="run-arrow" aria-hidden="true">↗</span></a></div><div class="run-registration-area"><div class="run-hero-actions"><a class="run-official-link" href="https://www.dubaifitnesschallenge.com/en/dubai-run/" target="_blank" rel="noopener noreferrer"><span class="run-official-mark" aria-hidden="true">↗</span><span><strong>OFFICIAL DUBAI RUN WEBSITE</strong><small>Register for the event &amp; get your bib</small></span><span class="run-official-chevron" aria-hidden="true">↗</span></a></div></div><div class="run-hero-cards run-date-only"><div class="run-hero-card run-date"><small>DUBAI RUN · SUNDAY</small><b>22 NOV <span>2026</span></b></div></div></div></section><section class="photorun-board" aria-labelledby="photorun-scoreboard">
   <div class="photorun-board-head"><h2 id="photorun-scoreboard">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
   <table><thead><tr><th scope="col">Position</th><th scope="col">Name</th><th scope="col">Score</th><th scope="col">Challenges completed</th></tr></thead><tbody id="photorun-ranking"></tbody></table>
@@ -514,6 +516,7 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
   <h2 id="run-gathering-title">Pre-Run Gathering</h2>
   <p><strong>Tonight at 9 PM</strong><br>Zabeel Park, Gate No. 4 car park</p>
   <p>Join us to hear the full Dubai Run Along plan!</p>
+  <a class="photorun-play" href="challenges.html">Play PhotoRun Challenge</a>
   <form method="dialog"><button type="submit">Close</button></form>
 </dialog>
 <script>
