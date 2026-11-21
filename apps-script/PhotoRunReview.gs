@@ -32,7 +32,7 @@ function render(rows) {
   byId("status").textContent = shown.length ? shown.length + " submissions" : "No submissions in this view.";
   for (const row of shown) {
     const card = element("article","");
-    card.append(element("strong",row.title),element("p",row.phone + " · " + row.time),element("p",row.state));
+    card.append(element("strong",row.title),element("p",[row.name, row.phone, row.time].filter(Boolean).join(" · ")),element("p",row.state));
     if (row.caption) card.append(element("p",row.caption));
     if (/^https:\\/\\/drive\\.google\\.com\\//.test(row.photo)) {
       const link = element("a","Open photo");
@@ -70,8 +70,8 @@ function photoRunReviewSheet_(tab) {
 function listPhotoRunReviews(tab) {
   const sheet = photoRunReviewSheet_(tab);
   if (!sheet || sheet.getLastRow() < 2) return [];
-  return sheet.getRange(2, 1, sheet.getLastRow() - 1, 7).getDisplayValues().map((v, i) => ({
-    tab, row: i + 2, time: v[0], phone: v[1], task: v[2], title: v[3], caption: v[4], photo: v[5], state: v[6] || "Pending"
+  return sheet.getRange(2, 1, sheet.getLastRow() - 1, tab === "Challenge Entries" ? 8 : 7).getDisplayValues().map((v, i) => ({
+    tab, row: i + 2, time: v[0], phone: v[1], task: v[2], title: v[3], caption: v[4], photo: v[5], state: v[6] || "Pending", name: v[7] || ""
   })).filter(row => row.photo).reverse();
 }
 
