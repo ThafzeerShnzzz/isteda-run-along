@@ -2,6 +2,7 @@ const byId = id => document.getElementById(id);
 const make = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
 const storageKey = "run-along-challenge-progress";
 let catalog, endpoint, activeLevel = -1;
+let gameTimer;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
@@ -134,6 +135,10 @@ function openChallenges() {
   byId("play").hidden = false;
   byId("tasks").hidden = true;
   activeLevel = -1;
+  byId("game-guide").hidden = false;
+  byId("enter-game").hidden = false;
+  byId("game-loading").hidden = true;
+  byId("game-levels").hidden = true;
   byId("levels").replaceChildren(...catalog.map((level, index) => {
     const button = make("button", "");
     button.setAttribute("aria-pressed", "false");
@@ -206,7 +211,20 @@ function downloadPDF() {
 }
 
 
+byId("enter-game").onclick = () => {
+  byId("game-guide").hidden = true;
+  byId("enter-game").hidden = true;
+  byId("game-loading").hidden = false;
+  const delay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1150;
+  gameTimer = setTimeout(() => {
+    byId("game-loading").hidden = true;
+    byId("game-levels").hidden = false;
+    byId("choose-level").focus();
+  }, delay);
+};
+
 byId("different-entry").onclick = () => {
+  clearTimeout(gameTimer);
   entry = null;
   saveEntry();
   byId("play").hidden = true;
