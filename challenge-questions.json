@@ -36,29 +36,29 @@
     "tasks": [
       {
         "id": "L2-01",
-        "title": "Reverse Bibs",
-        "text": "Find a runner whose bib ends with your last two digits reversed, like 27 and 72. Take a selfie showing both bib endings."
+        "title": "Dubai Run Throwback",
+        "text": "Find someone wearing an older Dubai Run shirt. Take a photo together showing both editions. Bonus bragging rights if you get three different years in one shot."
       },
       {
         "id": "L2-02",
-        "title": "Dubai Run Throwback",
-        "text": "Find someone wearing an older Dubai Run shirt. Take a photo showing both editions. Bonus if you get three different years in one photo."
+        "title": "Shoe Twin",
+        "text": "Find a runner wearing shoes of the same brand and colour as yours. Take a photo showing both pairs."
       },
       {
-        "id": "L2-03",
-        "title": "Three Emirates",
-        "text": "Find runners who came from three different Emirates. Take a group selfie and name all three Emirates in the caption.",
-        "caption": true
+        "id": "L2-06",
+        "title": "The Runner Rectangle",
+        "text": "Find four Dubai Run participants from outside ISTEDA. Make a rectangle with your arms together and ask a friend to take the photo."
       },
       {
         "id": "L2-04",
-        "title": "The 1–5 Bib Lineup",
-        "text": "Find five runners whose bibs end in 1, 2, 3, 4 and 5. Take one group photo showing all five endings."
+        "title": "Match the Reference Photo",
+        "text": "Choose either reference spot: the Al Boursa St 200 m sign or Texas Chicken. Take a photo from the same spot and match the angle as closely as you can.",
+        "referencePhotos": true
       },
       {
         "id": "L2-05",
-        "title": "Recreate the Run",
-        "text": "Find someone with a photo from a previous Dubai Run. Recreate their old pose together and upload the two shots side by side."
+        "title": "Direction Challenge ↪️📸",
+        "text": "Find a road sign with a left-turn or right-turn arrow. Strike a dramatic pose pointing or leaning in the same direction. Ask a friend to capture you and the sign in the same photo."
       }
     ],
     "points": 2,
@@ -69,29 +69,28 @@
     "tasks": [
       {
         "id": "L3-01",
+        "title": "Reverse Bibs",
+        "text": "Find a runner whose bib ends with your last two digits reversed. If yours ends in 27, look for 72. Take a selfie showing both bibs."
+      },
+      {
+        "id": "L3-02",
+        "title": "Sheikh Zayed Road Jump 📸",
+        "text": "On a clear stretch of the closed Dubai Run route, find two white dashed lane markings in the same row. Jump from one dash toward the next and ask a friend to catch you with both feet off the ground."
+      },
+      {
+        "id": "L3-03",
         "title": "Triple 7",
         "text": "Find someone whose bib contains three 7s anywhere in the number. Take a selfie with them holding up seven fingers."
       },
       {
-        "id": "L3-02",
-        "title": "Three Running Crews",
-        "text": "Take one photo with runners from three different running groups. Name the groups in your caption.",
-        "caption": true
-      },
-      {
-        "id": "L3-03",
-        "title": "Dubai Then and Now",
-        "text": "Recreate a pose from an older Dubai Run photo with the same Dubai landmark in the background. Submit the photos side by side."
-      },
-      {
         "id": "L3-04",
-        "title": "The Skyline Lineup",
-        "text": "Take a group photo with five other runners and two recognizable Dubai landmarks in the same frame."
+        "title": "Birthday Challenge",
+        "text": "Find someone whose bib ends in the day of the month you were born. If you were born on the 21st, look for 21. Take a selfie while they point to the matching digits."
       },
       {
         "id": "L3-05",
-        "title": "Four Shoe Brands",
-        "text": "Find four runners wearing four different shoe brands. Take one photo showing all four pairs."
+        "title": "Maths Match",
+        "text": "Find a runner whose last bib digit adds to 10 with yours: 6 + 4, 9 + 1, or 2 + 8. Take a selfie with both bibs visible and show the numbers with your fingers. If your bib ends in 0, find two runners whose bibs end in 9 and 1, and show all three bibs in one photo."
       }
     ],
     "points": 3,
