@@ -36,11 +36,9 @@ function doPost(e) {
         const row = photoRunEntryRow_(entries, phone);
         if (!row) return expired_();
         const cell = entries.getRange(row, 9);
-        if (!cell.getValue()) {
-          entries.getRange(1, 9).setValue("Submitted at");
-          cell.setValue(new Date());
-          SpreadsheetApp.flush();
-        }
+        if (!entries.getRange(1, 9).getValue()) entries.getRange(1, 9).setValue("Submitted at");
+        cell.setValue(new Date());
+        SpreadsheetApp.flush();
         return reply_({ok: true, finalized: true});
       }
       if (!/^(L[123]|OPEN)-[0-9]{2}$/.test(input.id) || typeof input.title !== "string") {
@@ -53,9 +51,6 @@ function doPost(e) {
     const photo = decodePhoto_(input.photo);
     const folder = DriveApp.getFolderById(config.PHOTO_FOLDER_ID);
     lock.waitLock(10000);
-    if (input.action === "task" && photoRunFinalized_(workbook, phone)) {
-      return reply_({ok: false, error: "Your PhotoRun entry has already been submitted."});
-    }
     const tabName = input.action === "entry" ? "Challenge Entries" : "Challenge Photos";
     let tab = workbook.getSheetByName(tabName);
     if (!tab) {
