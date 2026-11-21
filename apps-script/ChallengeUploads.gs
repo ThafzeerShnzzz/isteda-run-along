@@ -14,9 +14,9 @@ function doPost(e) {
       phone = normalizePhone_(input.phone);
       if (!/^\d{8,15}$/.test(phone)) return reply_({ok: false, error: "Enter your registered WhatsApp number."});
       const attendees = workbook.getSheetByName(config.REGISTRATION_TAB);
-      const column = Number(config.WHATSAPP_COLUMN);
-      const rows = attendees.getLastRow() - 1;
-      const numbers = rows > 0 ? attendees.getRange(2, column, rows, 1).getDisplayValues() : [];
+      const column = Number(config.WHATSAPP_COLUMN || 3);
+      const rows = attendees.getLastRow();
+      const numbers = rows > 0 ? attendees.getRange(1, column, rows, 1).getDisplayValues() : [];
       if (!numbers.some(row => normalizePhone_(row[0]) === phone)) {
         return reply_({ok: false, error: "This number is not on the RUN ALONG registration list."});
       }
@@ -57,7 +57,14 @@ function doPost(e) {
     if (input.action === "entry") {
       const session = Utilities.getUuid();
       cache.put("entry:" + session, phone, 21600);
-      return reply_({ok: true, session});
+      const photos = workbook.getSheetByName("Challenge Photos");
+      const saved = photos && photos.getLastRow() > 1
+        ? photos.getRange(2, 2, photos.getLastRow() - 1, 6).getValues()
+        : [];
+      const completed = [...new Set(saved.filter(row =>
+        normalizePhone_(row[0]) === phone && row[5] !== "Rejected"
+      ).map(row => row[1]))];
+      return reply_({ok: true, session, completed});
     }
     return reply_({ok: true, already: duplicate});
   } catch (error) {
