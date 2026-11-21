@@ -91,7 +91,7 @@ function displayLevel(index) {
   progress.setAttribute("role", "status");
   section.replaceChildren(make("h2", levelLabel(level)), progress);
   updateProgress();
-  if (level.scoringLimit) section.append(make("p", "Complete any 3 of 5 for up to " + level.scoringLimit * level.points + " points."));
+  if (level.scoringLimit && level.kind !== "common") section.append(make("p", "Complete any 3 of 5 for up to " + level.scoringLimit * level.points + " points."));
   if (level.rule) section.append(make("p", level.rule));
   if (!level.tasks.length) section.append(make("p", "Tasks coming soon."));
   for (const task of level.tasks) {
@@ -191,7 +191,7 @@ function openChallenges() {
     }
     if (level.points) {
       tile.className = "scored-level";
-      const rate = make("small", level.points + (level.points === 1 ? " point per challenge" : " points per challenge"));
+      const rate = make("small", level.kind === "common" ? "2 points when approved" : level.points + (level.points === 1 ? " point per challenge" : " points per challenge"));
       tile.append(rate);
     }
     return tile;
@@ -322,7 +322,7 @@ try {
   photoInput.disabled = testingMode;
   byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=numbered-questions"), json("challenge-config.json")
+    json("challenge-questions.json?v=common-wristband"), json("challenge-config.json")
   ]);
   if (endpoint) {
     byId("continue").disabled = false;
