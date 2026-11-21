@@ -22,11 +22,13 @@ function doPost(e) {
       if (!numbers.some(row => normalizePhone_(row[0]) === phone)) {
         return reply_({ok: false, error: "This number is not on the RUN ALONG registration list."});
       }
+      if (photoRunArchived_(workbook, phone)) return archivedPhotoRunReply_();
       if (input.action === "verify") return reply_({ok: true});
     } else {
       if (typeof input.session !== "string" || !/^[a-f0-9-]{36}$/.test(input.session)) return expired_();
       phone = cache.get("entry:" + input.session);
       if (!phone) return expired_();
+      if (photoRunArchived_(workbook, phone)) return archivedPhotoRunReply_();
       if (input.action === "status") return reply_({ok: true, ...reviewProgress_(workbook, phone)});
       if (input.action === "finalize") {
         lock.waitLock(10000);
@@ -172,10 +174,12 @@ function photoRunLeaderboard_(workbook, config) {
   }
 
   const players = new Map();
-  for (const row of entries.getRange(2, 1, entries.getLastRow() - 1, 8).getDisplayValues()) {
+  const entryRows = entries.getRange(2, 1, entries.getLastRow() - 1, 10).getDisplayValues();
+  const archived = new Set(entryRows.filter(row => row[9]).map(row => normalizePhone_(row[1])));
+  for (const row of entryRows) {
     const phone = normalizePhone_(row[1]);
     const name = names.get(phone) || row[7].trim();
-    if (phone && name && row[2] === "PASS" && row[6] !== "Rejected") {
+    if (phone && !archived.has(phone) && name && row[2] === "PASS" && row[6] !== "Rejected") {
       players.set(phone, {name, reviews: new Map()});
     }
   }
@@ -204,4 +208,15 @@ function photoRunLeaderboard_(workbook, config) {
     return {position, ...row};
   });
   return {ok: true, total, rankings};
+}
+
+function photoRunArchived_(workbook, phone) {
+  const sheet = workbook.getSheetByName("Challenge Entries");
+  if (!sheet || sheet.getLastRow() < 2) return false;
+  return sheet.getRange(2, 2, sheet.getLastRow() - 1, 9).getDisplayValues()
+    .some(row => normalizePhone_(row[0]) === phone && Boolean(row[8]));
+}
+
+function archivedPhotoRunReply_() {
+  return reply_({ok: false, error: "This PhotoRun entry has been archived. Contact the organizer to restore it."});
 }
