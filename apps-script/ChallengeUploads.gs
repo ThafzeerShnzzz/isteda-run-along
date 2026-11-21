@@ -155,7 +155,7 @@ function photoRunFinalized_(workbook, phone) {
 }
 
 function photoRunLeaderboard_(workbook, config) {
-  const levels = [{"ids":["L1-01","L1-02","L1-03","L1-04","L1-05"],"points":1,"limit":3},{"ids":["L2-01","L2-02","L2-06","L2-04","L2-05"],"points":2,"limit":3},{"ids":["L3-01","L3-02","L3-03","L3-04","L3-05"],"points":3,"limit":3}];
+  const levels = [{"ids":["OPEN-06"],"points":2,"limit":1},{"ids":["L1-01","L1-02","L1-03","L1-04","L1-05"],"points":1,"limit":3},{"ids":["L2-01","L2-02","L2-06","L2-04","L2-05"],"points":2,"limit":3},{"ids":["L3-01","L3-02","L3-03","L3-04","L3-05"],"points":3,"limit":3}];
   const total = levels.reduce((count, level) => count + level.ids.length, 0);
   const entries = workbook.getSheetByName("Challenge Entries");
   const photos = workbook.getSheetByName("Challenge Photos");
