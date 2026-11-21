@@ -4,6 +4,7 @@ const storageKey = "run-along-challenge-progress";
 let catalog, endpoint, activeLevel = -1;
 let gameTimer;
 let photoRunUnlocked = false;
+const testingMode = true;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
@@ -94,7 +95,7 @@ function displayLevel(index) {
     card.append(make("h3", task.title), make("p", task.text));
     section.append(card);
     if (entry.completed.includes(task.id)) {
-      card.append(make("p", "Photo submitted"));
+      card.append(make("p", entry.preview ? "Test submission complete" : "Photo submitted"));
       continue;
     }
     const form = document.createElement("form");
@@ -120,15 +121,15 @@ function displayLevel(index) {
       button.disabled = true;
       status.textContent = "Uploading…";
       try {
-        await request({
+        if (!currentEntry.preview) await request({
           action: "task", session: currentEntry.session, id: task.id, title: task.title,
           caption: caption?.value.trim() || "", photo: await photoData(photo.files[0])
         });
         if (entry !== currentEntry) return;
         if (!entry.completed.includes(task.id)) entry.completed.push(task.id);
-        saveEntry();
+        if (!currentEntry.preview) saveEntry();
         updateProgress();
-        form.replaceWith(make("p", "Photo submitted"));
+        form.replaceWith(make("p", entry.preview ? "Test submission complete" : "Photo submitted"));
       } catch (error) {
         status.textContent = error.message;
       } finally {
@@ -139,6 +140,7 @@ function displayLevel(index) {
 }
 
 function openChallenges() {
+  byId("preview-notice").hidden = !entry.preview;
   byId("entry").hidden = true;
   byId("play").hidden = false;
   const tasks = byId("tasks");
@@ -320,14 +322,16 @@ byId("verify").addEventListener("submit", async event => {
   button.disabled = true;
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
-  status.textContent = "Checking your number and uploading your admit card photo…";
+  const photo = data.get("pass");
+  const preview = testingMode && !photo?.size;
+  status.textContent = preview ? "Opening the test game…" : "Checking your number and uploading your admit card photo…";
   try {
-    const result = await request({action: "entry", phone: data.get("phone"), photo: await photoData(data.get("pass"))});
+    const result = preview ? null : await request({action: "entry", phone: data.get("phone"), photo: await photoData(photo)});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
-    entry = {session: result.session, completed: result.completed || []};
+    entry = {session: result?.session, completed: result?.completed || [], preview};
     status.textContent = "";
-    saveEntry();
+    if (!preview) saveEntry();
     form.reset();
     openChallenges();
   } catch (error) {
@@ -345,6 +349,8 @@ async function json(url) {
 }
 
 try {
+  byId("verify").elements.pass.required = !testingMode;
+  byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
     json("challenge-questions.json?v=special-awards"), json("challenge-config.json")
   ]);
