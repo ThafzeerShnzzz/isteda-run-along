@@ -355,7 +355,7 @@ try {
   photoInput.disabled = testingMode;
   byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=special-awards"), json("challenge-config.json")
+    json("challenge-questions.json?v=easy-mode"), json("challenge-config.json")
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
