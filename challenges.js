@@ -150,6 +150,7 @@ function openChallenges() {
     button.setAttribute("aria-pressed", "false");
     button.onclick = () => displayLevel(index);
     tile.append(button);
+    if (level.kind === "awards") tile.className = "scored-level awards-level";
     if (level.points) {
       tile.className = "scored-level";
       const rate = make("small", level.points + (level.points === 1 ? " point per challenge" : " points per challenge"));
@@ -276,7 +277,7 @@ async function json(url) {
 
 try {
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json"), json("challenge-config.json")
+    json("challenge-questions.json?v=awards"), json("challenge-config.json")
   ]);
   byId("download").disabled = false;
   byId("download").onclick = downloadPDF;
