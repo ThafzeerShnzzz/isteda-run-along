@@ -64,7 +64,7 @@ function listPhotoRunReviews(tab) {
   if (!sheet || sheet.getLastRow() < 2) return [];
   return sheet.getRange(2, 1, sheet.getLastRow() - 1, tab === "Challenge Entries" ? 10 : 7).getDisplayValues().map((v, i) => ({
     tab, row: i + 2, time: v[0], phone: v[1], task: v[2], title: v[3], caption: v[4], photo: v[5], state: v[6] || "Pending", name: v[7] || "", archived: Boolean(v[9])
-  })).filter(row => row.photo).reverse();
+  })).filter(row => row.photo || (tab === "Challenge Entries" && row.task === "PASS" && row.phone)).reverse();
 }
 
 function reviewPhotoRunEntry(tab, row, photo, state) {
