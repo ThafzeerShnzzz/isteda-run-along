@@ -22,7 +22,7 @@ function restorePreview(phone) {
 let catalog, endpoint, activeLevel = -1;
 let gameTimer;
 let photoRunUnlocked = false;
-const testingMode = true;
+const testingMode = false;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
