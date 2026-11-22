@@ -2,27 +2,9 @@ const byId = id => document.getElementById(id);
 const make = (tag, text) => Object.assign(document.createElement(tag), {textContent: text});
 const storageKey = "run-along-challenge-progress";
 
-function previewProgressKey(phone) {
-  let digits = String(phone).replace(/[^0-9]/g, "").replace(/^00/, "");
-  if (/^05[0-9]{8}$/.test(digits)) digits = "971" + digits.slice(1);
-  if (/^5[0-9]{8}$/.test(digits)) digits = "971" + digits;
-  return storageKey + "-preview-" + digits;
-}
-
-function restorePreview(phone) {
-  const key = previewProgressKey(phone);
-  try {
-    const saved = JSON.parse(localStorage.getItem(key));
-    if (Array.isArray(saved?.completed)) return {...saved, preview: true, key};
-  } catch {
-    // Continue with a new preview if browser storage is unavailable.
-  }
-  return {completed: [], reviews: {}, preview: true, key};
-}
 let catalog, endpoint, activeLevel = -1;
 let gameTimer;
 let photoRunUnlocked = false;
-const testingMode = false;
 let entry = null;
 try {
   entry = JSON.parse(sessionStorage.getItem(storageKey));
@@ -296,17 +278,13 @@ byId("verify").addEventListener("submit", async event => {
   form.setAttribute("aria-busy", "true");
   const loadingStarted = performance.now();
   const name = String(data.get("name") || "").trim();
-  const photo = data.get("pass");
-  const preview = testingMode && !photo?.size;
-  status.textContent = preview ? "Checking your RUN ALONG registration…" : "Checking your number and uploading your admit card photo…";
+  status.textContent = "Checking your RUN ALONG registration…";
   try {
     const phone = data.get("phone");
-    const result = preview
-      ? await request({action: "verify", phone, name})
-      : await request({action: "entry", phone, name, photo: await photoData(photo)});
+    const result = await request({action: "entry", phone, name});
     const remaining = Math.max(0, 3000 - (performance.now() - loadingStarted));
     if (remaining) await new Promise(resolve => setTimeout(resolve, remaining));
-    entry = preview ? restorePreview(phone) : {session: result.session, completed: result.reviews ? result.completed : [], reviews: result.reviews || {}, finalized: Boolean(result.finalized), preview: false};
+    entry = {session: result.session, completed: result.reviews ? result.completed : [], reviews: result.reviews || {}, finalized: Boolean(result.finalized), preview: false};
     status.textContent = "";
     saveEntry();
     form.reset();
@@ -332,11 +310,6 @@ async function json(url) {
 }
 
 try {
-  const photoInput = byId("verify").elements.pass;
-  photoInput.required = !testingMode;
-  photoInput.closest("label").hidden = testingMode;
-  photoInput.disabled = testingMode;
-  byId("testing-note").hidden = !testingMode;
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
     json("challenge-questions.json?v=common-wristband"), json("challenge-config.json")
   ]);
