@@ -47,8 +47,7 @@ function doPost(e) {
         return reply_({ok: false, error: "Name the three Emirates in the caption."});
       }
     }
-    const photo = decodePhoto_(input.photo);
-    const folder = DriveApp.getFolderById(config.PHOTO_FOLDER_ID);
+    const photo = input.action === "entry" && !input.photo ? null : decodePhoto_(input.photo);
     lock.waitLock(10000);
     const tabName = input.action === "entry" ? "Challenge Entries" : "Challenge Photos";
     let tab = workbook.getSheetByName(tabName);
@@ -67,13 +66,14 @@ function doPost(e) {
       tab.getRange(existing + 2, 8).setValue(name);
     }
     if (!duplicate) {
-      const file = folder.createFile(Utilities.newBlob(photo, "image/jpeg", taskId + "-" + Utilities.getUuid() + ".jpg"));
+      const file = photo ? DriveApp.getFolderById(config.PHOTO_FOLDER_ID)
+        .createFile(Utilities.newBlob(photo, "image/jpeg", taskId + "-" + Utilities.getUuid() + ".jpg")) : null;
       try {
-        const title = input.action === "entry" ? "Armband" : safeCell_(input.title, 100);
-        tab.appendRow([new Date(), phone, taskId, title, safeCell_(input.caption, 160), file.getUrl(), "Pending", ...(input.action === "entry" ? [name] : [])]);
+        const title = input.action === "entry" ? (file ? "Armband" : "Registered number") : safeCell_(input.title, 100);
+        tab.appendRow([new Date(), phone, taskId, title, safeCell_(input.caption, 160), file ? file.getUrl() : "", "Pending", ...(input.action === "entry" ? [name] : [])]);
         SpreadsheetApp.flush();
       } catch (error) {
-        file.setTrashed(true);
+        if (file) file.setTrashed(true);
         throw error;
       }
     }
