@@ -414,6 +414,17 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 }
 .run-gathering-dialog::backdrop { background: #0009; }
 .run-gathering-dialog h2 { margin: 0 0 12px; color: var(--lime); font-size: 23px; }
+.run-gathering-actions {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.run-gathering-dialog .run-gathering-actions .photorun-play {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  margin: 0;
+}
 .run-gathering-dialog button {
   min-height: 44px;
   padding: 0 16px;
@@ -514,7 +525,11 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
 </button>
 <dialog id="run-gathering-dialog" class="run-gathering-dialog" aria-labelledby="run-gathering-title">
   <h2 id="run-gathering-title">RunAlong ScoreBoard Updated</h2>
-  <a class="photorun-play" href="#photorun-scoreboard">View Scoreboard</a>
+  <nav class="run-gathering-actions" aria-label="RunAlong options">
+    <a class="photorun-play" href="challenges.html">Play Game</a>
+    <a class="photorun-play" href="#join">Register</a>
+    <a class="photorun-play" href="#photorun-scoreboard">Live Scoreboard</a>
+  </nav>
   <form method="dialog"><button type="submit">Close</button></form>
 </dialog>
 <script>
@@ -522,7 +537,7 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
   const trigger = document.getElementById('run-gathering-trigger');
   const dialog = document.getElementById('run-gathering-dialog');
   const scoreboard = document.getElementById('photorun-scoreboard');
-  const storageKey = 'runalong-scoreboard-update-read-20261123';
+  const storageKey = 'runalong-notification-options-read-20261123';
 
   try {
     trigger.hidden = localStorage.getItem(storageKey) === '1';
@@ -540,7 +555,9 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
     }
   });
 
-  dialog.querySelector('a').addEventListener('click', () => dialog.close());
+  dialog.querySelectorAll('.run-gathering-actions a').forEach(link => {
+    link.addEventListener('click', () => dialog.close());
+  });
   dialog.addEventListener('close', () => scoreboard.focus({ preventScroll: true }));
 })();
 </script>
