@@ -37,9 +37,19 @@ li h3{font-size:clamp(29px,3.6vw,56px);line-height:1.02;letter-spacing:-.05em}li
 .crew-footer small{font-size:inherit}.crew-footer>a{text-decoration:none;padding-block:8px}.crew-footer>a:hover{text-decoration:underline}
 @media(max-width:700px){.crew-footer{flex-wrap:wrap;gap:12px}.crew-footer .brand{width:100%}.crew-footer small,.crew-footer>a{font-size:12px}}
 .event-subtitle{margin:-12px 0 22px;font-size:clamp(18px,2vw,24px);font-weight:700;line-height:1.25}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero .final-lap-title { animation: final-lap-title-shake 2s linear infinite; }
+  @keyframes final-lap-title-shake {
+    0%, 16%, 100% { transform: none; }
+    2%, 8% { transform: translateX(-3px); }
+    5%, 11% { transform: translateX(3px); }
+    14% { transform: translateX(-1px); }
+  }
+}
 </style></head><body id="top"><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
-<template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1><p class="event-subtitle">Community gathering</p></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
-<main id="content"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1><p class="event-subtitle">Community gathering</p><p class="intro">Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan ↗</button><p role="status" id="status"></p></form></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></main>
+<template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1 class="final-lap-title">Final <em>Lap</em></h1><p class="event-subtitle">Community gathering</p></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
+<main id="content"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1 class="final-lap-title">Final <em>Lap</em></h1><p class="event-subtitle">Community gathering</p><p class="intro">Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan ↗</button><p role="status" id="status"></p></form></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></main>
 <aside class="community-note" aria-labelledby="community-note-title"><div class="frame">
 <h2 id="community-note-title">A little heads-up.</h2>
 <p>Final Lap is an independent ISTEDA × EL FORSA community gathering. Follow us for crew photos and upcoming events.</p>
