@@ -103,7 +103,7 @@ function displayLevel(index) {
     const review = entry.reviews?.[task.id];
     if (entry.completed.includes(task.id) || review === "Pending") {
       const label = entry.preview ? "Test submission complete" :
-        review === "Winner" ? "Award winner · 4 points" :
+        review === "Winner" ? `Award winner · ${task.awardPoints} points` :
         review === "Approved" ? "Approved" : "Submitted for review";
       card.append(make("p", label));
       continue;

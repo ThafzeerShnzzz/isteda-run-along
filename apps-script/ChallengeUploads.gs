@@ -193,6 +193,7 @@ function photoRunLeaderboard_(workbook, config) {
       score += Math.min(count, level.limit) * level.points;
     }
     score += ["OPEN-03", "OPEN-04"].filter(id => player.reviews.get(id) === "Winner").length * 4;
+    if (player.reviews.get("OPEN-05") === "Winner") score += 5;
     if (score > 0) scores.push({name: player.name, score, completed});
   }
 
