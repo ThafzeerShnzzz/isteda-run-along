@@ -1,8 +1,31 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Final Lap · ISTEDA × EL FORSA</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#10140f;color:#f4f4eb;font:17px/1.55 Arial,sans-serif}main,nav{max-width:700px;margin:auto;padding:24px}nav a,b,.tag,.date{color:#d8ff36}main{padding-block:clamp(32px,7vw,80px)}h1{font-size:clamp(48px,10vw,88px);line-height:1;margin:12px 0;letter-spacing:-.05em}h2{margin:36px 0 12px}h3{margin:3px 0 4px;line-height:1.2}p{margin:8px 0 20px}.tag,b{font-size:13px;font-weight:bold;letter-spacing:.05em}form{max-width:380px}label,input,button{display:block}input,button{font:inherit;border-radius:8px;padding:12px}input{margin:6px 0 14px;width:100%;color:inherit;background:#21261e;border:1px solid #77846c}button{background:#d8ff36;color:#10140f;border:0;font-weight:bold;cursor:pointer}ol{list-style:none;padding:0;margin-left:6px}li{position:relative;border-left:2px solid #586b38;padding:0 0 20px 24px}li::before{content:"";position:absolute;left:-6px;top:7px;width:10px;height:10px;border-radius:50%;background:#d8ff36}li:last-child{border-color:transparent}li p{margin:4px 0;color:#d8decf}
-</style></head><body><nav><a href="./">← RunAlong</a></nav><main id="content"><span class="tag">ISTEDA × EL FORSA</span><h1>Final Lap</h1><p>Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan</button><p role="status" id="status"></p></form></main>
+:root{--ink:#10130f;--lime:#d8ff36;--paper:#f2f1e9;--rule:#c8c9bf;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--paper);font:17px/1.55 Arial,Helvetica,sans-serif}
+.frame{width:min(1200px,calc(100% - 48px));margin:auto}
+header{border-bottom:1px solid #41473b}nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px}
+.brand{display:flex;align-items:center;gap:16px}.brand img{width:98px;height:36px;object-fit:contain}.brand img+img{width:72px}
+a{color:inherit}nav a{font-size:.9rem;font-weight:bold;text-underline-offset:4px}
+.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:center;gap:clamp(24px,5vw,80px);padding-block:clamp(32px,5vw,70px)}
+h1,h2,h3,p,figure{margin:0}.tag,.date,label,.crew figcaption{font-weight:750}.tag{color:var(--lime);font-size:.78rem;letter-spacing:.12em}
+h1,h2,h3{font-family:'Archivo Black','Arial Black',Arial,sans-serif;font-weight:900}
+h1{font-size:clamp(76px,10vw,154px);line-height:.81;text-transform:uppercase;letter-spacing:-.075em;margin:24px 0 28px}
+h1 em{color:var(--lime);display:block}.date{color:var(--lime);margin:0 0 12px}.intro{max-width:48ch;font-size:clamp(18px,1.6vw,23px)}
+.crew{position:relative;overflow:hidden;border-radius:6px}.crew img{width:100%;height:clamp(420px,40vw,570px);object-fit:cover;display:block}.crew figcaption{position:absolute;bottom:12px;left:12px;background:var(--ink);padding:5px 10px;font-size:.75rem;color:var(--paper)}
+form{max-width:410px;margin-top:24px}label,input,button{display:block}label{font-size:.87rem;margin-bottom:6px}input,button{font:inherit}input{width:100%;color:var(--paper);background:#22271d;border:1px solid #78846b;border-radius:6px;padding:12px}button{margin-top:12px;border:0;border-radius:40px;background:var(--lime);color:var(--ink);font-weight:800;padding:12px 22px;cursor:pointer}
+:focus-visible{outline:3px solid #72b8ff;outline-offset:3px}#status:not(:empty){margin-top:12px}
+.schedule{background:var(--paper);color:var(--ink);padding-block:clamp(40px,6vw,90px)}
+h2{font-size:clamp(48px,7vw,96px);letter-spacing:-.065em;line-height:.98;text-transform:uppercase}
+ol{list-style:none;margin:32px 0 0;padding:0;border-top:2px solid var(--ink)}
+li{display:grid;grid-template-columns:minmax(140px,.5fr) minmax(0,1fr);column-gap:30px;border-bottom:1px solid var(--rule);padding:clamp(22px,3vw,42px) 0}
+li b{grid-row:span 2;align-self:start;justify-self:start;background:var(--lime);padding:4px 10px;font-size:clamp(17px,1.8vw,25px)}
+li h3{font-size:clamp(29px,3.6vw,56px);line-height:1.02;letter-spacing:-.05em}li p{margin-top:10px;max-width:54ch;font-size:clamp(17px,1.4vw,21px)}
+.packing{background:var(--lime);color:var(--ink);padding-block:clamp(32px,5vw,64px)}.packing h2{font-size:clamp(36px,5vw,72px)}.packing p{margin-top:14px;font-size:clamp(18px,2vw,26px);max-width:48ch}
+@media(max-width:700px){.frame{width:calc(100% - 36px)}.hero{grid-template-columns:1fr;gap:24px}.crew img{height:auto;aspect-ratio:3/2;object-position:center 55%}.brand{gap:9px}.brand img{width:74px}.brand img+img{width:52px}li{display:block}li b{display:inline-block;margin-bottom:12px}}
+</style></head><body><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
+<template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1></div><figure class="crew"><img src="photos/2026/skyline-jump.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
+<main id="content"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1><p class="intro">Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan ↗</button><p role="status" id="status"></p></form></div><figure class="crew"><img src="photos/2026/skyline-jump.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></main>
 <script>
 const bytes = value => Uint8Array.from(atob(value), char => char.charCodeAt(0));
 async function unlock(password) {
@@ -16,7 +39,27 @@ document.querySelector('#gate').addEventListener('submit',async event=>{
   const button=event.currentTarget.querySelector('button');
   button.disabled=true;
   try {
-    document.querySelector('#content').innerHTML=await unlock(document.querySelector('#password').value);
+    const draft = document.createElement('template');
+    draft.innerHTML = await unlock(document.querySelector('#password').value);
+    const plan = draft.content;
+    const hero = document.querySelector('#hero').content.cloneNode(true);
+    const copy = hero.querySelector('.copy');
+    copy.querySelector('.tag').textContent = plan.querySelector('.tag').textContent;
+    const description = plan.querySelector('.date + p');
+    description.className = 'intro';
+    copy.append(plan.querySelector('.date'), description);
+    const [timelineHeading, packingHeading] = plan.querySelectorAll('h2');
+    const packingText = packingHeading.nextElementSibling;
+    function section(className, ...children) {
+      const block = document.createElement('section');
+      block.className = className;
+      const inner = document.createElement('div');
+      inner.className = 'frame';
+      inner.append(...children);
+      block.append(inner);
+      return block;
+    }
+    document.querySelector('#content').replaceChildren(hero, section('schedule', timelineHeading, plan.querySelector('ol')), section('packing', packingHeading, packingText));
     const heading=document.querySelector('h1'); heading.tabIndex=-1; heading.focus();
   } catch {
     document.querySelector('#status').textContent='Couldn’t unlock the plan. Check your password and try again.';
