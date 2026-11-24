@@ -468,7 +468,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .event-photos a{display:block}.event-photos img{display:block;width:100%;height:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px}
 .event-photos a:first-child{grid-column:span 2;grid-row:span 2}.event-photos a:first-child img{aspect-ratio:1;object-fit:contain;background:#11120f}
 @media(max-width:700px){.event-photos{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.event-photos a:first-child{grid-row:auto}.event-photos a:first-child img{aspect-ratio:4/3}}
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="#join">JOIN THE CREW <span class="run-arrow" aria-hidden="true">↗</span></a></div></nav></header><main><div class="photorun-board-area dark">
+</style><style>.next-lap{display:grid;gap:6px;width:min(100%,440px);margin:18px 0;padding:18px 20px;border-left:4px solid var(--lime);background:#20251b;border-radius:5px}.next-lap span{font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--lime)}.next-lap small{font-size:12px}</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
@@ -484,6 +484,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
       <p>What a morning on Sheikh Zayed Road! From spotting an EL FORSA wristband in the crowd to pulling new friends into a PhotoRun selfie, you guys made those 5 km fly by.</p>
       <p>Thanks for running with us. See you at the next one! ❤️</p>
       <strong>ISTEDA × EL FORSA</strong>
+      <a class="next-lap" href="final-lap.html"><small>UPCOMING · ISTEDA × EL FORSA</small><span>One Final Lap ↗</span><small>Open the private plan</small></a>
       <a class="pill lime" href="#photorun-scoreboard">View PhotoRun Scoreboard ↗</a>
     </div>
     <img class="finish-photo" src="photos/2026/thank-you.webp" alt="Thank You Isteda Crew poster with a runner in an EL FORSA cap" width="960" height="1280">
@@ -501,59 +502,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 <a href="photos/2026/skyline-jump.webp"><img src="photos/2026/skyline-jump.webp" alt="Three runners jumping together on Sheikh Zayed Road" loading="lazy"></a>
 <a href="photos/2026/crowd-selfie.webp"><img src="photos/2026/crowd-selfie.webp" alt="Crew selfie among the morning crowd" loading="lazy"></a>
 <a href="photos/2026/museum-trio.webp"><img src="photos/2026/museum-trio.webp" alt="Three runners posing by the Museum of the Future" loading="lazy"></a>
-<a href="photos/2026/phone-portrait.webp"><img src="photos/2026/phone-portrait.webp" alt="Runner in an EL FORSA cap looking at his phone" loading="lazy"></a></div></div></section><section class="section signup" id="join"><div class="wrap signupgrid"><div><div class="eyebrow" style="color:var(--lime)">THE CREW IS CALLING</div><h2>YOU<br/>IN?</h2><p>Joining us Saturday evening, at the Metro on Sunday morning or directly at the starting point? Tell us where we'll see you.</p><p style="color:var(--lime);font-weight:bold">GOOD PEOPLE. GOOD VIBES. GREAT MILES.</p></div><form autocomplete="on" class="form" id="registration" method="POST" novalidate><div class="field"><label for="name">Your name *</label><input id="name" name="name" placeholder="What do we call you?" required=""/></div><div class="field"><label for="phone">WhatsApp number *</label><input id="phone" name="phone" placeholder="+971 ..." required="" type="tel"/></div><div class="field"><label for="before">Run with ISTEDA before?</label><select id="before" name="before"><option>Yes, back for more!</option><option>No, 1st time with ISTEDA crew</option></select></div><div class="field"><label for="where">Where will you join us?</label><select id="where" name="where"><option>Saturday Eve</option><option>Sunday Morning at Metro</option><option>Directly at Starting Point</option></select></div><div class="field full"><label for="medical">Medical conditions or accessibility needs (optional)</label><textarea id="medical" name="medical" placeholder="Anything you'd like us to know?"></textarea></div><div class="field full"><label for="ideas">Suggestions &amp; ideas (optional)</label><textarea id="ideas" name="ideas" placeholder="Ideas for the crew?"></textarea></div><button class="submit" id="register-button" type="submit">COUNT ME IN <span class="run-arrow" aria-hidden="true">↗</span></button><div class="fine">Your registration is sent privately to the ISTEDA organising team. Medical/accessibility details are optional and should only be shared if relevant.</div><div aria-live="polite" id="registration-status" role="status"></div></form></div></section><section class="terms"><div class="wrap"><h3>A LITTLE HEADS-UP.</h3><p>ISTEDA is an independent community connecting friends for Dubai Run. We are not affiliated with or involved in organizing the official event. All participants must register officially, obtain their bib and follow Dubai Run rules and safety instructions. Everyone is responsible for their own safety, belongings and travel arrangements. Please stay connected with the crew, as the event is expected to be crowded.</p></div></section>
-</main><footer class="footer"><div class="wrap footerline"><div class="logo footer-brand-logos"><img src="isteda-logo.png.png" alt="ISTEDA"/><img src="elforsa-logo.png.png" alt="EL FORSA"/></div><small>MADE FOR THE CREW · DUBAI RUN 2026</small><a href="#" style="font-size:12px">BACK TO TOP ↑</a></div></footer><script>
-const RUN_ALONG_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzsP1cpVM3rtBA4uqqsVFgRDl3skZp0dErb1_xoP-vLakzJG4_khmvaMjw-pRQae_COJw/exec';
-const registrationForm = document.getElementById('registration');
-const registrationStatus = document.getElementById('registration-status');
-function normalizeWhatsApp(value) {
-  const digits = value.replace(/\D/g, '').replace(/^00/, '');
-  if (/^05\d{8}$/.test(digits)) return '971' + digits.slice(1);
-  if (/^5\d{8}$/.test(digits)) return '971' + digits;
-  return digits;
-}
-
-async function submitRunAlong() {
-  const button = document.getElementById('register-button');
-  if (button.disabled) return;
-  registrationStatus.style.color = '';
-  const name = document.getElementById('name').value.trim();
-  const whatsapp = normalizeWhatsApp(document.getElementById('phone').value);
-  if (!name) { registrationStatus.textContent = 'Please enter your name.'; return; }
-  if (!/^\d{8,15}$/.test(whatsapp)) { registrationStatus.textContent = 'Please enter a valid WhatsApp number (e.g. 971501234567).'; return; }
-  const payload = {formType:'run-along-registration',name,whatsapp,
-    previousRun:document.getElementById('before').value,
-    joiningPoint:document.getElementById('where').value,
-    medicalNeeds:document.getElementById('medical').value.trim(),
-    suggestions:document.getElementById('ideas').value.trim()};
-  button.disabled=true;
-  registrationStatus.textContent='Sending registration…';
-  try {
-    const response = await fetch(RUN_ALONG_SCRIPT_URL, {
-      method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(payload)
-    });
-    if (!response.ok) throw new Error('Registration request failed');
-    const result = (await response.text()).trim();
-
-    if (result === 'DUPLICATE') {
-      registrationStatus.style.color = '#ff656b';
-      registrationStatus.textContent = '✕ This WhatsApp number is already registered for RUN ALONG.';
-      return;
-    }
-
-    if (result !== 'OK') throw new Error('Registration was not confirmed');
-
-    registrationStatus.textContent = 'Registration confirmed! Welcome to the ISTEDA crew.';
-    registrationStatus.style.color = '#d8ff36';
-    registrationForm.reset();
-  } catch {
-    registrationStatus.textContent = 'We couldn’t confirm your registration. Please try again.';
-  } finally {button.disabled=false;}
-}
-registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlong();});
-</script>
+<a href="photos/2026/phone-portrait.webp"><img src="photos/2026/phone-portrait.webp" alt="Runner in an EL FORSA cap looking at his phone" loading="lazy"></a></div></div></section><section class="terms"><div class="wrap"><h3>A LITTLE HEADS-UP.</h3><p>ISTEDA is an independent community connecting friends for Dubai Run. We are not affiliated with or involved in organizing the official event. RunAlong 2026 has finished. Thank you for joining us.</p></div></section>
+</main><footer class="footer"><div class="wrap footerline"><div class="logo footer-brand-logos"><img src="isteda-logo.png.png" alt="ISTEDA"/><img src="elforsa-logo.png.png" alt="EL FORSA"/></div><small>MADE FOR THE CREW · DUBAI RUN 2026</small><a href="#" style="font-size:12px">BACK TO TOP ↑</a></div></footer>
 
 <button type="button" id="run-gathering-trigger" class="run-gathering-trigger" aria-haspopup="dialog" aria-controls="run-gathering-dialog">
   <span class="run-gathering-icon" aria-hidden="true">
@@ -567,7 +517,7 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
   <h2 id="run-gathering-title">RunAlong ScoreBoard Updated</h2>
   <nav class="run-gathering-actions" aria-label="RunAlong options">
     <a class="photorun-play" href="challenges.html">Play Game</a>
-    <a class="photorun-play" href="#join">Register</a>
+    <a class="photorun-play" href="final-lap.html">Final Lap</a>
     <a class="photorun-play" href="#photorun-scoreboard">Live Scoreboard</a>
   </nav>
   <form method="dialog"><button type="submit">Close</button></form>

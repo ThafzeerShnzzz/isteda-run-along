@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Final Lap · ISTEDA × EL FORSA</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#10140f;color:#f4f4eb;font:17px/1.55 Arial,sans-serif}main,nav{max-width:700px;margin:auto;padding:24px}nav a,b,.tag,.date{color:#d8ff36}main{padding-block:clamp(32px,7vw,80px)}h1{font-size:clamp(48px,10vw,88px);line-height:1;margin:12px 0;letter-spacing:-.05em}h2{margin:36px 0 12px}h3{margin:3px 0 4px;line-height:1.2}p{margin:8px 0 20px}.tag,b{font-size:13px;font-weight:bold;letter-spacing:.05em}form{max-width:380px}label,input,button{display:block}input,button{font:inherit;border-radius:8px;padding:12px}input{margin:6px 0 14px;width:100%;color:inherit;background:#21261e;border:1px solid #77846c}button{background:#d8ff36;color:#10140f;border:0;font-weight:bold;cursor:pointer}ol{list-style:none;padding:0;margin-left:6px}li{position:relative;border-left:2px solid #586b38;padding:0 0 20px 24px}li::before{content:"";position:absolute;left:-6px;top:7px;width:10px;height:10px;border-radius:50%;background:#d8ff36}li:last-child{border-color:transparent}li p{margin:4px 0;color:#d8decf}
+</style></head><body><nav><a href="./">← RunAlong</a></nav><main id="content"><span class="tag">ISTEDA × EL FORSA</span><h1>Final Lap</h1><p>Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan</button><p role="status" id="status"></p></form></main>
+<script>
+const bytes = value => Uint8Array.from(atob(value), char => char.charCodeAt(0));
+async function unlock(password) {
+  const material = await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt:bytes('MpNJku4+Uxkokg1Pfc96pw=='),iterations:310000},material,{name:'AES-GCM',length:256},false,['decrypt']);
+  const plain = await crypto.subtle.decrypt({name:'AES-GCM',iv:bytes('AH9a2FOVxdcV7rjn')},key,bytes('1UP+1bRs65zshUFLmwPyNdAnaxYunR1Iq41SVmVi7hfU9mP+zDP5qlPhXV2E2Zvk05Jkyrl+KHniCDdB6/6N36jg2ffZOpJxqDN7wJH5qx6PF0gzy2XMzI6uSWx94cBKOim7XuK0c+iFYW2SJ0lALFUBZCHoLqvBW9nLQTI220NeJyo6LfUVDVyKuNuORZCORp86bgyzoURPTeIJnIHPFwniNlRmotI3De5Zjvf+U/vCki3i4uFJ6SgzVtb8CnftndMEtI4RkLZlDzuthcE1Jm063SFABfrOQd+lFI+KDzWuFjpbY8/42bPb9gbSab80fUlWuA+QaSekidFaJ0KYuVlffaJ2of/FtEGcnA6/By/rBBWubwS9RFuyYogzRMraronS2E+YU9A8tvoHY9NQPtEr/CGMWLk4CZetcm9lP4iCFUlO/ubui1vP76rtwr9ShNXXHPOWjpia+uFoqxMpq1dB1x1XOpcSSIa7/QgFF/MvYQh7HgTPXk1tjyo6GNGxouZSG6bltZxybguOCaKO/rpDLT3movy2RhU/HikgzTEQijQKdo68weFrZLqAn7lRThLUXS8m8fLuWan4zcPzFrNFcGkNdlOf/Po3TJVYeGOriP0qg0tkOB+UTT17Eh+T67UMIkw2xhGpvjY+Sj18Wq8Ehg/g2bshbSbTgFNLZOIc3tzNtOypeY4Erj4xVrkpAJaEMjNXIi0WW+csnukDcaH+roBZnIEzTBEItskTFwqZVPk4c7odBzCj+DdVMnWGJVa1HCr3sLuol3XK2NQBSpiGJLelWiFsDXnrF9FXM6t5czKHfw8PgmTcH84OkABKLeMr5F6YwTYWKV88a35o47wNrmuBgj8IyVfQyasW4EcfZ5iPofWt/TCnh1RmyZNeP4QbRH4xypSqqc5m/95Gi9Dc3oD2LYOnxw2qtKyzJSGsVOnUPtfBm/yvScz87ZYHl++01nn5RFeAnrQ3aKBUT7wxvzCLWKYzTjxwtOqk1y3h5ueEzvFxjNbphMnQKYG8BKOhbCOZJRSrJtF10DMzBDjQ6K4ht3Mf0Ut4k1Rhn47AlfiflzWeaSvaGyImQ4Zmzd7U0h5/zHYXLTu4XySwO3LT37GNDfLE8dRvmRbQ1L+VRgJyMLYuD/bOWhtppUKxteIo2+UjdzfVty5d1kqXnoAekuyEQvyErAQzZR/OMXkW1DNOGvXOooCiwEYBLj1Sw/qXQs5OV5lEIg0bJbZki3QjMNVBci5qbz4eqzsp5UeUk4fszsVg8oOHf4fxlFRckFbJkUe6CJbEM/KIjIhegaqxLkWSMiK69BYU7XUGne8uO+PvJcDjyoFrB75NEI55ieaKQDYiB+0OCKwHJuamISNaQGs4/Y6Rj8sSgCSt1RmOXDXlB6yTHSYu+6Dx+9PYIdVHCy+vb3bhum/Fh/g61nnAyNU4IhMBhCag+uNy0TaMZBjnEwlaceCWTWIkGwL/Met88MMDwhhlXFabhpglzU+BfrB+6nOUCtXsnmWbtwJ3mTs6enH8177H3JQTDQwNkQzcek+7oDLQLQMY10CZn1lCnNVI28hAdKlR8Y9S1S6NSwsPFR1kP0gNJ0yyPvPY83W4kCRE2tIHfYGfPZbVftyMGLv8Al2ca2n8pMnzOeKSFxtYJecvmNJaGlVyQnNRTcRapz2ZXgDmR39phWt3AG1RJcxrgf7OvSyzvvLKyBr0G7MhF5/zJUBsGtHmTwhiHjU+5mmNxOwoZ/T3In5OGY1jkXjxmF2Dph8bKRTJAcjNLk6f5Oe1oam+qz2WZvQCNG+VY0VRZ0pou+qaxzkPyObBEmcvyh12zT60q3EnZxOqI0XUNE5ND3wezNc/EkoSJ/NkAWD61PGvXSrrKAnW6H3qyaebzJGS5vtiFmFIz0Py4l8nWG76H6beFEm5LpzuRq/gdA=='));
+  return new TextDecoder().decode(plain);
+}
+document.querySelector('#gate').addEventListener('submit',async event=>{
+  event.preventDefault();
+  const button=event.currentTarget.querySelector('button');
+  button.disabled=true;
+  try {
+    document.querySelector('#content').innerHTML=await unlock(document.querySelector('#password').value);
+    const heading=document.querySelector('h1'); heading.tabIndex=-1; heading.focus();
+  } catch {
+    document.querySelector('#status').textContent='Couldn’t unlock the plan. Check your password and try again.';
+    button.disabled=false;
+  }
+});
+</script></body></html>
