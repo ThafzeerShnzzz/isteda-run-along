@@ -5,7 +5,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--paper);font:17px/1.55 Arial,Helvetica,sans-serif}
 .frame{width:min(1200px,calc(100% - 48px));margin:auto}
 header{border-bottom:1px solid #41473b}nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px}
-.brand{display:flex;align-items:center;gap:16px}.brand img{width:98px;height:36px;object-fit:contain}.brand img+img{width:72px}
+.brand{display:flex;align-items:center;gap:16px}.brand img{width:160px;height:60px;object-fit:contain}.brand img+img{width:118px}
 a{color:inherit}nav a{font-size:.9rem;font-weight:bold;text-underline-offset:4px}
 .hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:center;gap:clamp(24px,5vw,80px);padding-block:clamp(32px,5vw,70px)}
 h1,h2,h3,p,figure{margin:0}.tag,.date,label,.crew figcaption{font-weight:750}.tag{color:var(--lime);font-size:.78rem;letter-spacing:.12em}
@@ -22,7 +22,7 @@ li{display:grid;grid-template-columns:minmax(140px,.5fr) minmax(0,1fr);column-ga
 li b{grid-row:span 2;align-self:start;justify-self:start;background:var(--lime);padding:4px 10px;font-size:clamp(17px,1.8vw,25px)}
 li h3{font-size:clamp(29px,3.6vw,56px);line-height:1.02;letter-spacing:-.05em}li p{margin-top:10px;max-width:54ch;font-size:clamp(17px,1.4vw,21px)}
 .packing{background:var(--lime);color:var(--ink);padding-block:clamp(32px,5vw,64px)}.packing h2{font-size:clamp(36px,5vw,72px)}.packing p{margin-top:14px;font-size:clamp(18px,2vw,26px);max-width:48ch}
-@media(max-width:700px){.frame{width:calc(100% - 36px)}.hero{grid-template-columns:1fr;gap:24px}.crew img{height:auto;aspect-ratio:3/2;object-position:center 55%}.brand{gap:9px}.brand img{width:74px}.brand img+img{width:52px}li{display:block}li b{display:inline-block;margin-bottom:12px}}
+@media(max-width:700px){.frame{width:calc(100% - 36px)}.hero{grid-template-columns:1fr;gap:24px}.crew img{height:auto;aspect-ratio:3/2;object-position:center 55%}.brand{gap:9px}.brand img{width:clamp(92px,27vw,132px);height:48px}.brand img+img{width:clamp(68px,20vw,98px)}li{display:block}li b{display:inline-block;margin-bottom:12px}}
 .booking{padding-block:clamp(40px,6vw,80px)}.booking h2{color:var(--lime)}.booking p{max-width:58ch;font-size:clamp(18px,1.6vw,23px);margin-top:16px}.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.contact-links a{border:1px solid var(--lime);padding:10px 16px;border-radius:40px;text-decoration:none;font-weight:700}.contact-links a:hover{background:var(--lime);color:var(--ink)}
 </style></head><body><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
 <template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
