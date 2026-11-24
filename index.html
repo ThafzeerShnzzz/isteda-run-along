@@ -537,11 +537,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   .event-photos img{display:block;width:100%;height:auto}
 }
 </style><style>#plan .archive-status{display:inline-flex;align-items:center;gap:.55em;margin:0 0 16px;padding:8px 14px;border-radius:5px;background:#182010;color:#d8ff36;font:800 clamp(14px,1.4vw,18px)/1.2 Arial,sans-serif;letter-spacing:.06em}#plan .archive-status span{font-size:1.2em}</style><style>
-.run-gathering-trigger.is-read .run-gathering-icon{animation:none}
-.run-gathering-trigger.is-read .run-gathering-icon::after{display:none}
 @media(max-width:700px){
 .nav>.run-gathering-trigger{position:static;transform:none;margin-left:auto}
-.nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
+.nav>.run-gathering-trigger{min-width:44px;min-height:44px;justify-items:center;align-content:center}
+.nav>.run-gathering-trigger[hidden]{display:none}
+.nav>.run-gathering-trigger .run-gathering-icon{width:32px;height:32px}
+.nav>.run-gathering-trigger svg{width:19px;height:19px}
+.run-gathering-dialog{width:min(280px,calc(100% - 32px));padding:16px;border-radius:12px}
+.run-gathering-dialog h2{font-size:19px;margin-bottom:8px}
+.run-gathering-dialog .run-gathering-actions{gap:6px}
 .nav>.run-gathering-trigger .run-gathering-caption{display:none}
 }
 </style><style>
@@ -641,23 +645,8 @@ header.dark .nav .header-brands img+img{width:clamp(74px,8vw,108px)!important}
   menu.addEventListener('keydown', event => {
     if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary').focus(); }
   });
-  const storageKey = 'runalong-final-lap-notification-read';
-
-  try {
-    trigger.classList.toggle('is-read', localStorage.getItem(storageKey) === '1');
-  } catch {
-    // The notification can still be dismissed on this page.
-  }
-
-  trigger.addEventListener('click', () => {
-    dialog.showModal();
-    trigger.classList.add('is-read');
-    try {
-      localStorage.setItem(storageKey, '1');
-    } catch {
-      // The notification is already hidden on this page.
-    }
-  });
+  trigger.addEventListener('click', () => dialog.showModal());
+  dialog.addEventListener('close', () => { trigger.hidden = true; });
 
   dialog.querySelectorAll('.run-gathering-actions a').forEach(link => {
     link.addEventListener('click', () => dialog.close());
