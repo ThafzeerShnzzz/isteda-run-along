@@ -342,11 +342,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 @media(max-width:540px){.photorun-board{margin:16px auto 24px;padding:12px}.photorun-board th,.photorun-board td{font-size:12px}}
 
 .next-event-link{white-space:nowrap}
-.next-event-link small{font-size:.72em;text-transform:uppercase;letter-spacing:.04em;margin-right:.3em}
-.next-event-link small::before{content:"";display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px;background:#ff595e;box-shadow:0 0 5px #ff595e}
+.next-event-link small,.score-live{font-size:.75em;letter-spacing:.04em;font-weight:700}
+.next-event-link small{text-transform:uppercase;color:var(--lime)}
+.lap-arrow{display:inline-block;color:var(--lime);font: bold 1.25em/1 Arial,sans-serif}
+.score-live::before{content:"";display:inline-block;width:10px;height:10px;margin-right:5px;border-radius:50%;background:#ff595e;box-shadow:0 0 5px #ff595e}
 @media(prefers-reduced-motion:no-preference){
-  .next-event-link small::before{animation:next-event-glow .55s ease-in-out infinite}
-  @keyframes next-event-glow{0%,100%{opacity:1;box-shadow:0 0 8px 2px #ff595eb3}50%{opacity:.28;box-shadow:none}}
+  .lap-arrow{animation:lap-arrow-nudge .65s ease-in-out infinite}
+  .score-live::before{animation:score-live-pulse 1.3s ease-in-out infinite}
+  @keyframes lap-arrow-nudge{50%{transform:translate(3px,-3px)}}
+  @keyframes score-live-pulse{50%{opacity:.4}}
 }
 </style>
 <style id="photorun-hero-style">
@@ -540,7 +544,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
 .nav>.run-gathering-trigger .run-gathering-caption{display:none}
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
