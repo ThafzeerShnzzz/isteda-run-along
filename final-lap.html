@@ -24,6 +24,7 @@ li h3{font-size:clamp(29px,3.6vw,56px);line-height:1.02;letter-spacing:-.05em}li
 .packing{background:var(--lime);color:var(--ink);padding-block:clamp(32px,5vw,64px)}.packing h2{font-size:clamp(36px,5vw,72px)}.packing p{margin-top:14px;font-size:clamp(18px,2vw,26px);max-width:48ch}
 @media(max-width:700px){.frame{width:calc(100% - 36px)}.hero{grid-template-columns:1fr;gap:24px}.crew img{height:auto;aspect-ratio:3/2;object-position:center 55%}.brand{gap:9px}.brand img{width:clamp(92px,27vw,132px);height:48px}.brand img+img{width:clamp(68px,20vw,98px)}li{display:block}li b{display:inline-block;margin-bottom:12px}}
 .booking{padding-block:clamp(40px,6vw,80px)}.booking h2{color:var(--lime)}.booking p{max-width:58ch;font-size:clamp(18px,1.6vw,23px);margin-top:16px}.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.contact-links a{border:1px solid var(--lime);padding:10px 16px;border-radius:40px;text-decoration:none;font-weight:700}.contact-links a:hover{background:var(--lime);color:var(--ink)}
+.entry-note{display:inline-block;margin-bottom:12px;padding:3px 12px;border:1px solid #798c37;border-radius:999px;color:var(--lime);font-size:.82rem;font-weight:750}
 </style></head><body><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
 <template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
 <main id="content"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1><p class="intro">Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan ↗</button><p role="status" id="status"></p></form></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></main>
@@ -52,6 +53,10 @@ document.querySelector('#gate').addEventListener('submit',async event=>{
     const [timelineHeading, packingHeading] = plan.querySelectorAll('h2');
     const packingNotes = [packingHeading.nextElementSibling, packingHeading.nextElementSibling.nextElementSibling];
     const booking = plan.querySelector('.booking');
+    const entry = document.createElement('span');
+    entry.className = 'entry-note';
+    entry.textContent = 'Free to join';
+    booking.querySelector('h2').before(entry);
     function section(className, ...children) {
       const block = document.createElement('section');
       block.className = className;
