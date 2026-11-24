@@ -504,7 +504,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   .event-photos a{min-width:0}
   .event-photos img{display:block;width:100%;height:auto}
 }
-</style><style>#plan .archive-status{display:inline-flex;align-items:center;gap:.55em;margin:0 0 16px;padding:8px 14px;border-radius:5px;background:#182010;color:#d8ff36;font:800 clamp(14px,1.4vw,18px)/1.2 Arial,sans-serif;letter-spacing:.06em}#plan .archive-status span{font-size:1.2em}</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style><style>#plan .archive-status{display:inline-flex;align-items:center;gap:.55em;margin:0 0 16px;padding:8px 14px;border-radius:5px;background:#182010;color:#d8ff36;font:800 clamp(14px,1.4vw,18px)/1.2 Arial,sans-serif;letter-spacing:.06em}#plan .archive-status span{font-size:1.2em}</style><style>
+.run-gathering-trigger.is-read .run-gathering-icon{animation:none}
+.run-gathering-trigger.is-read .run-gathering-icon::after{display:none}
+@media(max-width:700px){
+.nav>.run-gathering-trigger{position:static;transform:none;margin-left:auto}
+.nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
+.nav>.run-gathering-trigger .run-gathering-caption{display:none}
+}
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
@@ -540,7 +548,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 <a href="photos/2026/phone-portrait.webp"><img src="photos/2026/phone-portrait.webp" alt="Runner in an EL FORSA cap looking at his phone" loading="lazy"></a></div></div></section><section class="section signup registration-closed" id="join" aria-labelledby="registration-heading"><div class="wrap"><div class="eyebrow">REGISTRATION</div><h2 id="registration-heading">Event finished.</h2><p>Registration for RunAlong 2026 is closed. Thanks for running with us!</p></div></section><section class="terms"><div class="wrap"><h3>A LITTLE HEADS-UP.</h3><p>ISTEDA is an independent community connecting friends for Dubai Run. We are not affiliated with or involved in organizing the official event. RunAlong 2026 has finished. Thank you for joining us.</p></div></section>
 </main><footer class="footer"><div class="wrap footerline"><div class="logo footer-brand-logos"><img src="isteda-logo.png.png" alt="ISTEDA"/><img src="elforsa-logo.png.png" alt="EL FORSA"/></div><small>MADE FOR THE CREW · DUBAI RUN 2026</small><a href="#" style="font-size:12px">BACK TO TOP ↑</a></div></footer>
 
-<button type="button" id="run-gathering-trigger" class="run-gathering-trigger" aria-haspopup="dialog" aria-controls="run-gathering-dialog">
+<button type="button" id="run-gathering-trigger" class="run-gathering-trigger" aria-label="Open notifications" aria-haspopup="dialog" aria-controls="run-gathering-dialog">
   <span class="run-gathering-icon" aria-hidden="true">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
       <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>
@@ -549,11 +557,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   <span class="run-gathering-caption">Tap to open the notification</span>
 </button>
 <dialog id="run-gathering-dialog" class="run-gathering-dialog" aria-labelledby="run-gathering-title">
-  <h2 id="run-gathering-title">RunAlong ScoreBoard Updated</h2>
+  <h2 id="run-gathering-title">Notifications</h2>
   <nav class="run-gathering-actions" aria-label="RunAlong options">
+    <a class="photorun-play" href="final-lap.html"><strong>Final Lap</strong><small>EL FORSA’s next event</small></a>
+    <a class="photorun-play" href="#photorun-scoreboard">Scoreboard</a>
     <a class="photorun-play" href="challenges.html">Play Game</a>
-    <a class="photorun-play" href="final-lap.html">Final Lap</a>
-    <a class="photorun-play" href="#photorun-scoreboard">Live Scoreboard</a>
   </nav>
   <form method="dialog"><button type="submit">Close</button></form>
 </dialog>
@@ -577,7 +585,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   function placeNotification() {
     menu.open = false;
     trigger.querySelector('.run-gathering-caption').textContent = phoneWidth.matches ? 'Event notification' : 'Tap to open the notification';
-    if (phoneWidth.matches) phoneLinks.append(trigger);
+    if (phoneWidth.matches) menu.before(trigger);
     else dialog.before(trigger);
   }
   placeNotification();
@@ -589,17 +597,17 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   menu.addEventListener('keydown', event => {
     if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary').focus(); }
   });
-  const storageKey = 'runalong-notification-options-read-20261123';
+  const storageKey = 'runalong-final-lap-notification-read';
 
   try {
-    trigger.hidden = localStorage.getItem(storageKey) === '1';
+    trigger.classList.toggle('is-read', localStorage.getItem(storageKey) === '1');
   } catch {
     // The notification can still be dismissed on this page.
   }
 
   trigger.addEventListener('click', () => {
     dialog.showModal();
-    trigger.hidden = true;
+    trigger.classList.add('is-read');
     try {
       localStorage.setItem(storageKey, '1');
     } catch {
@@ -610,7 +618,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   dialog.querySelectorAll('.run-gathering-actions a').forEach(link => {
     link.addEventListener('click', () => dialog.close());
   });
-  dialog.addEventListener('close', () => scoreboard.focus({ preventScroll: true }));
+  dialog.querySelector('[href="#photorun-scoreboard"]').addEventListener('click', () => scoreboard.focus({ preventScroll: true }));
 })();
 </script>
 </body></html>
