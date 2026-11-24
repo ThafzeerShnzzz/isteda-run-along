@@ -556,7 +556,18 @@ header.dark .nav .header-brands img+img{width:clamp(74px,8vw,108px)!important}
   header.dark .nav .header-brands img{width:clamp(90px,26vw,120px)!important}
   header.dark .nav .header-brands img+img{width:clamp(65px,19vw,88px)!important}
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo header-brands"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><div class="navlinks"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style><style>
+.lap-name{display:inline-block;width:fit-content}
+@media(prefers-reduced-motion:no-preference){
+  .lap-name{animation:lap-name-shake 2s linear infinite}
+  @keyframes lap-name-shake{
+    0%,16%,100%{transform:none}
+    2%,8%{transform:translateX(-2px) rotate(-1deg)}
+    5%,11%{transform:translateX(2px) rotate(1deg)}
+    14%{transform:translateX(-1px)}
+  }
+}
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo header-brands"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><div class="navlinks"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> <span class="lap-name">Final Lap</span> <span class="lap-arrow" aria-hidden="true">↗</span></a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> <span class="lap-name">Final Lap</span> <span class="lap-arrow" aria-hidden="true">↗</span></a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
@@ -572,7 +583,7 @@ header.dark .nav .header-brands img+img{width:clamp(74px,8vw,108px)!important}
       <p>What a morning on Sheikh Zayed Road! From spotting an EL FORSA wristband in the crowd to pulling new friends into a PhotoRun selfie, you guys made those 5 km fly by.</p>
       <p>Thanks for running with us. See you at the next one! ❤️</p>
       <strong>ISTEDA × EL FORSA</strong>
-      <a class="next-lap" href="final-lap.html"><small>Hey crew, we’re not finished yet.</small><span>Final Lap ↗</span><small>EL FORSA × ISTEDA community gathering. Stay tuned.</small></a>
+      <a class="next-lap" href="final-lap.html"><small>Hey crew, we’re not finished yet.</small><span class="lap-name">Final Lap ↗</span><small>EL FORSA × ISTEDA community gathering. Stay tuned.</small></a>
     </div>
     <img class="finish-photo" src="photos/2026/thank-you-clean.webp" alt="Thank You poster with a runner in an EL FORSA cap" width="960" height="1280">
   </div>
