@@ -340,6 +340,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .photorun-board th:nth-child(2){width:34%}
 .photorun-board td:nth-child(3){color:#d8ff36;font-weight:800}
 @media(max-width:540px){.photorun-board{margin:16px auto 24px;padding:12px}.photorun-board th,.photorun-board td{font-size:12px}}
+
+.next-event-link{white-space:nowrap}
+.next-event-link small{font-size:.72em;text-transform:uppercase;letter-spacing:.04em;margin-right:.3em}
+.next-event-link small::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px;background:#ff595e;box-shadow:0 0 5px #ff595e}
+@media(prefers-reduced-motion:no-preference){
+  .next-event-link small::before{animation:next-event-glow 2.4s ease-in-out infinite}
+  @keyframes next-event-glow{50%{box-shadow:0 0 8px 2px #ff595eb3}}
+}
 </style>
 <style id="photorun-hero-style">
 .run-registration-area{display:flex;align-items:center;max-width:740px;margin-top:24px}
@@ -523,7 +531,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
 .nav>.run-gathering-trigger .run-gathering-caption{display:none}
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
