@@ -523,7 +523,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
 .nav>.run-gathering-trigger .run-gathering-caption{display:none}
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard">View Live PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
@@ -588,7 +588,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   openLinkedRankings();
   window.addEventListener('hashchange', openLinkedRankings);
   document.querySelectorAll('a[href="#photorun-scoreboard"]').forEach(link => {
-    link.addEventListener('click', () => { rankings.open = true; });
+    link.addEventListener('click', () => {
+      rankings.open = true;
+      const phoneMenu = link.closest('.phone-menu');
+      if (phoneMenu) phoneMenu.open = false;
+    });
   });
   const menu = document.querySelector('.phone-menu');
   const phoneLinks = menu.querySelector('.phone-links');
