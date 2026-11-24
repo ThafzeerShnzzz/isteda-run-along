@@ -28,9 +28,24 @@ li h3{font-size:clamp(29px,3.6vw,56px);line-height:1.02;letter-spacing:-.05em}li
 .crew-afternoon{border-top:1px solid #41473b;padding-block:clamp(36px,5vw,72px)}.crew-afternoon h2{font-size:clamp(38px,5.6vw,76px)}.activities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:28px}.activities>div{padding-top:14px;border-top:2px solid var(--lime)}.activities h3{font-size:clamp(23px,2.4vw,34px);line-height:1.1}.activities p{margin-top:10px;color:#d8decf}@media(max-width:700px){.activities{grid-template-columns:1fr}}
 .village{padding-block:clamp(36px,5vw,72px);background:#1a2017}.village-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr);align-items:center;gap:clamp(24px,5vw,68px)}.village h2{font-size:clamp(36px,5vw,72px);margin:12px 0 18px}.village dl{margin:20px 0}.village dt{color:var(--lime);font-weight:700}.village dd{margin:0 0 10px}.village p+p{margin-top:12px}.village img{width:100%;height:auto;border-radius:8px}@media(max-width:700px){.village-grid{grid-template-columns:minmax(0,1fr)}}
 .crew-afternoon h2{margin-top:12px;max-width:18ch}.air-feature{display:flex;align-items:baseline;flex-wrap:wrap;gap:14px 30px;background:var(--lime);color:var(--ink);border-radius:6px;margin-top:26px;padding:clamp(18px,3vw,38px)}.air-feature b{color:inherit;font-size:1.1rem}.air-feature h3,.crew-social h3{font-size:clamp(26px,3vw,44px);line-height:1.1}.air-feature p,.crew-social p{margin-top:10px}.village h3+p{margin-top:12px}.village dl dt{border-top:1px solid #47513f;padding-top:10px}.crew-social{margin-top:32px;padding-top:24px;border-top:2px solid var(--lime)}.crew-social p{max-width:64ch}
-</style></head><body><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
+
+.community-note{padding:38px 0 54px;background:#e3e3d9;color:var(--ink)}
+.community-note h2{font:700 22px/1.2 Arial,sans-serif;letter-spacing:normal}
+.community-note p{margin-top:12px;max-width:76ch;font-size:16px}
+.community-note a{display:inline-block;margin-top:8px;padding-block:4px;font-weight:700;text-underline-offset:4px}
+.crew-footer{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:36px;font-size:13px}
+.crew-footer small{font-size:inherit}.crew-footer>a{text-decoration:none;padding-block:8px}.crew-footer>a:hover{text-decoration:underline}
+@media(max-width:700px){.crew-footer{flex-wrap:wrap;gap:12px}.crew-footer .brand{width:100%}.crew-footer small,.crew-footer>a{font-size:12px}}
+</style></head><body id="top"><header><nav class="frame"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><a href="./">← RunAlong</a></nav></header>
 <template id="hero"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></template>
 <main id="content"><section class="hero frame"><div class="copy"><span class="tag">ISTEDA × EL FORSA</span><h1>Final <em>Lap</em></h1><p class="intro">Enter the planning password to view the crew’s draft.</p><form id="gate"><label for="password">Planning password</label><input required id="password" type="password" autocomplete="current-password"><button>Open the plan ↗</button><p role="status" id="status"></p></form></div><figure class="crew"><img src="photos/2026/final-lap-zoom.webp" alt="Three RunAlong crew members jumping on Sheikh Zayed Road"><figcaption>The crew at RunAlong 2026</figcaption></figure></section></main>
+<aside class="community-note" aria-labelledby="community-note-title"><div class="frame">
+<h2 id="community-note-title">A little heads-up.</h2>
+<p>Final Lap is an independent ISTEDA × EL FORSA community gathering. Follow us for crew photos and upcoming events.</p>
+<a href="https://www.instagram.com/isteda_community/" target="_blank" rel="noopener">Follow @isteda_community on Instagram ↗</a>
+</div></aside>
+<footer><div class="frame crew-footer"><div class="brand"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><small>MADE FOR THE CREW · FINAL LAP 2026</small><a href="#top">BACK TO TOP ↑</a></div></footer>
+
 <script>
 const bytes = value => Uint8Array.from(atob(value), char => char.charCodeAt(0));
 async function unlock(password) {
