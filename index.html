@@ -509,17 +509,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   .phone-menu summary{min-height:44px;cursor:pointer;padding:11px 16px;border:1px solid #59614f;border-radius:24px;font-size:14px;font-weight:700}
   .phone-links{position:absolute;z-index:40;right:16px;top:calc(100% - 3px);width:min(272px,calc(100% - 32px));padding:6px;background:#191d16;border:1px solid #48503f;border-radius:12px;box-shadow:0 10px 28px #0005}
   .phone-links a,.phone-links button{display:block;width:100%;padding:12px;font:600 15px/1.4 Arial,sans-serif;color:inherit;text-align:left;text-decoration:none;background:transparent;border:0}
-  .phone-links .run-gathering-trigger{position:static;transform:none}
-  .phone-links .run-gathering-trigger[hidden],.phone-links .run-gathering-icon{display:none}
-  .phone-links .run-gathering-caption{display:block;max-width:none;padding:0;background:transparent;color:inherit;font:inherit}
   .ranking-disclosure{width:calc(100% - 40px);margin:8px auto 0}
   .ranking-disclosure summary{min-height:44px;font-size:14px;line-height:22px;padding:11px 0;border:0;border-radius:0}
-  .finish .finish-inner{grid-template-columns:minmax(0,1fr);padding-block:26px 36px;gap:20px}
+  .finish .finish-inner{grid-template-columns:minmax(0,1fr);padding-block:36px 52px;gap:32px}
   .finish-note .eyebrow{font-size:10px;letter-spacing:.09em}
-  .finish-note h1{font-size:clamp(34px,9vw,54px);line-height:1.02;margin:12px 0 16px;text-wrap:balance}
-  .finish-note p:not(.eyebrow){font-size:16px;line-height:1.55;margin-bottom:12px}
+  .finish-note h1{font-size:clamp(34px,9vw,54px);line-height:1.02;margin:16px 0 24px;text-wrap:balance}
+  .finish-note p:not(.eyebrow){font-size:16px;line-height:1.65;margin-bottom:18px}
   .finish-note strong{margin-bottom:14px}
-  .finish-note .next-lap{gap:5px;padding:14px 16px;margin:16px 0 0;width:100%}
+  .finish-note .next-lap{gap:8px;padding:18px 20px;margin:26px 0 0;width:100%}
   
   .finish-note .next-lap small{font-size:13px;line-height:1.45}
   .finish-note .next-lap span{font-size:clamp(24px,6.5vw,32px);line-height:1.12}
@@ -532,21 +529,24 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   #plan .journey .step:nth-child(n){border:0!important;border-left:2px solid #758843!important;box-shadow:none;border-radius:0!important;padding:14px 16px!important}
   #plan .journey .step h3{font-size:24px!important;margin:6px 0 8px!important}
   #plan .journey .step .tag{border:0!important;padding:1px 0!important;background:transparent!important;margin:8px 10px 0 0}
-  .event-photos{gap:10px;margin-top:18px}
+  .event-photos{gap:14px;margin-top:28px}
+  #plan .journey{gap:22px!important}
+  .info .infogrid{grid-template-columns:1fr!important;background:transparent;border:0;gap:12px}
+  .info .infocell{padding:18px 20px!important}
+  .footer .footerline{padding-bottom:52px}
   .event-photos a{min-width:0}
   .event-photos img{display:block;width:100%;height:auto}
 }
 </style><style>#plan .archive-status{display:inline-flex;align-items:center;gap:.55em;margin:0 0 16px;padding:8px 14px;border-radius:5px;background:#182010;color:#d8ff36;font:800 clamp(14px,1.4vw,18px)/1.2 Arial,sans-serif;letter-spacing:.06em}#plan .archive-status span{font-size:1.2em}</style><style>
 @media(max-width:700px){
-.nav>.run-gathering-trigger{position:static;transform:none;margin-left:auto}
-.nav>.run-gathering-trigger{min-width:44px;min-height:44px;justify-items:center;align-content:center}
-.nav>.run-gathering-trigger[hidden]{display:none}
-.nav>.run-gathering-trigger .run-gathering-icon{width:32px;height:32px}
-.nav>.run-gathering-trigger svg{width:19px;height:19px}
+.run-gathering-trigger{top:auto;bottom:calc(12px + env(safe-area-inset-bottom));right:calc(10px + env(safe-area-inset-right));transform:none;width:44px;height:44px;place-content:center}
+.run-gathering-trigger .run-gathering-icon{width:28px;height:28px;animation:none}
+.run-gathering-trigger .run-gathering-icon::after{width:8px;height:8px}
+.run-gathering-trigger svg{width:16px;height:16px}
 .run-gathering-dialog{width:min(280px,calc(100% - 32px));padding:16px;border-radius:12px}
 .run-gathering-dialog h2{font-size:19px;margin-bottom:8px}
 .run-gathering-dialog .run-gathering-actions{gap:6px}
-.nav>.run-gathering-trigger .run-gathering-caption{display:none}
+.run-gathering-trigger .run-gathering-caption{display:none}
 }
 </style><style>
 header.dark .nav .header-brands{display:flex;align-items:center;gap:clamp(8px,1vw,16px)}
@@ -640,15 +640,6 @@ header.dark .nav .header-brands img+img{width:clamp(74px,8vw,108px)!important}
   });
   const menu = document.querySelector('.phone-menu');
   const phoneLinks = menu.querySelector('.phone-links');
-  const phoneWidth = matchMedia('(max-width:700px)');
-  function placeNotification() {
-    menu.open = false;
-    trigger.querySelector('.run-gathering-caption').textContent = phoneWidth.matches ? 'Event notification' : 'Tap to open the notification';
-    if (phoneWidth.matches) menu.before(trigger);
-    else dialog.before(trigger);
-  }
-  placeNotification();
-  phoneWidth.addEventListener('change', placeNotification);
   phoneLinks.addEventListener('click', () => { menu.open = false; });
   document.addEventListener('click', event => {
     if (menu.open && !menu.contains(event.target)) menu.open = false;
