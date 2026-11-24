@@ -474,7 +474,37 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 #join.registration-closed h2{color:#dedede}
 .info .registration-status,.info .alert.registration-status{background:#333;color:#eee;border-color:#666}
 .info .registration-status :is(small,strong,b,p,span){color:#ddd}
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></nav></header><main><div class="photorun-board-area dark">
+</style><style id="phone-layout">
+.phone-menu{display:none}
+@media(max-width:700px){
+  header.dark .nav{position:relative;min-height:62px!important;flex-wrap:nowrap!important;padding:8px 20px!important}
+  header.dark .nav .navlinks{display:none!important}
+  .phone-menu{display:block;color:#f4f4ed}
+  .phone-menu summary{cursor:pointer;padding:10px 12px;border:1px solid #59614f;border-radius:24px;font-size:14px;font-weight:700}
+  .phone-links{position:absolute;z-index:40;right:16px;top:calc(100% - 3px);width:min(240px,calc(100vw - 32px));padding:6px;background:#191d16;border:1px solid #48503f;border-radius:12px;box-shadow:0 10px 28px #0005}
+  .phone-links a,.phone-links button{display:block;width:100%;padding:12px;font:600 15px/1.4 Arial,sans-serif;color:inherit;text-align:left;text-decoration:none;background:transparent;border:0}
+  .phone-links .run-gathering-trigger{position:static;transform:none}
+  .phone-links .run-gathering-trigger[hidden],.phone-links .run-gathering-icon{display:none}
+  .phone-links .run-gathering-caption{display:block;max-width:none;padding:0;background:transparent;color:inherit;font:inherit}
+  .ranking-disclosure{width:calc(100% - 40px);margin:8px auto 0}
+  .ranking-disclosure summary{font-size:13px;padding:10px 0;border:0;border-radius:0}
+  .finish .finish-inner{grid-template-columns:minmax(0,1fr);padding-block:26px 36px;gap:20px}
+  .finish-note .eyebrow{font-size:10px;letter-spacing:.09em}
+  .finish-note h1{font-size:clamp(36px,9.3vw,56px);line-height:1.01;margin:12px 0 18px}
+  .finish-note p:not(.eyebrow){font-size:16px;line-height:1.55;margin-bottom:12px}
+  .finish-note strong{margin-bottom:14px}
+  .finish-note .next-lap{gap:2px;padding:12px 15px;margin:16px 0 0}
+  .next-lap small:first-child{display:none}
+  .finish .finish-photo{width:min(100%,300px);height:auto;justify-self:center}
+  .section .sectionhead h2{font-size:clamp(32px,8vw,46px)!important;line-height:1.03!important}
+  #plan .journey .step:nth-child(n){border:0!important;border-left:2px solid #758843!important;box-shadow:none;border-radius:0!important;padding:14px 16px!important}
+  #plan .journey .step h3{font-size:24px!important;margin:6px 0 8px!important}
+  #plan .journey .step .tag{border:0!important;padding:1px 0!important;background:transparent!important;margin:8px 10px 0 0}
+  .event-photos{gap:10px;margin-top:18px}
+  .event-photos a{min-width:0}
+  .event-photos img{display:block;width:100%;height:auto}
+}
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="final-lap.html">Final Lap ↗</a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
@@ -540,6 +570,24 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
   window.addEventListener('hashchange', openLinkedRankings);
   document.querySelectorAll('a[href="#photorun-scoreboard"]').forEach(link => {
     link.addEventListener('click', () => { rankings.open = true; });
+  });
+  const menu = document.querySelector('.phone-menu');
+  const phoneLinks = menu.querySelector('.phone-links');
+  const phoneWidth = matchMedia('(max-width:700px)');
+  function placeNotification() {
+    menu.open = false;
+    trigger.querySelector('.run-gathering-caption').textContent = phoneWidth.matches ? 'Event notification' : 'Tap to open the notification';
+    if (phoneWidth.matches) phoneLinks.append(trigger);
+    else dialog.before(trigger);
+  }
+  placeNotification();
+  phoneWidth.addEventListener('change', placeNotification);
+  phoneLinks.addEventListener('click', () => { menu.open = false; });
+  document.addEventListener('click', event => {
+    if (menu.open && !menu.contains(event.target)) menu.open = false;
+  });
+  menu.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { menu.open = false; menu.querySelector('summary').focus(); }
   });
   const storageKey = 'runalong-notification-options-read-20261123';
 
