@@ -343,10 +343,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 
 .next-event-link{white-space:nowrap}
 .next-event-link small{font-size:.72em;text-transform:uppercase;letter-spacing:.04em;margin-right:.3em}
-.next-event-link small::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px;background:#ff595e;box-shadow:0 0 5px #ff595e}
+.next-event-link small::before{content:"";display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:6px;vertical-align:-2px;background:#ff595e;box-shadow:0 0 5px #ff595e}
 @media(prefers-reduced-motion:no-preference){
-  .next-event-link small::before{animation:next-event-glow 2.4s ease-in-out infinite}
-  @keyframes next-event-glow{50%{box-shadow:0 0 8px 2px #ff595eb3}}
+  .next-event-link small::before{animation:next-event-glow .55s ease-in-out infinite}
+  @keyframes next-event-glow{0%,100%{opacity:1;box-shadow:0 0 8px 2px #ff595eb3}50%{opacity:.28;box-shadow:none}}
 }
 </style>
 <style id="photorun-hero-style">
