@@ -544,7 +544,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .nav>.run-gathering-trigger .run-gathering-icon{width:44px;height:44px}
 .nav>.run-gathering-trigger .run-gathering-caption{display:none}
 }
-</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div></details></nav></header><main><div class="photorun-board-area dark">
+</style><style>
+header.dark .nav .header-brands{display:flex;align-items:center;gap:clamp(8px,1vw,16px)}
+header.dark .nav .header-brands img{display:block;width:clamp(104px,13vw,170px)!important;height:auto;object-fit:contain}
+header.dark .nav .header-brands img+img{width:clamp(74px,8vw,108px)!important}
+@media(max-width:700px){
+  header.dark .nav .header-brands img{width:clamp(90px,26vw,120px)!important}
+  header.dark .nav .header-brands img+img{width:clamp(65px,19vw,88px)!important}
+}
+</style></head><body><header class="dark"><nav class="wrap nav"><div class="logo header-brands"><img src="isteda-logo.png.png" alt="ISTEDA"><img src="elforsa-logo.png.png" alt="EL FORSA"></div><div class="navlinks"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div><details class="phone-menu"><summary>Menu</summary><div class="phone-links"><a href="#photorun-scoreboard"><small class="score-live">LIVE</small> PhotoRun Scoreboard</a><a href="challenges.html">PhotoRun</a><a class="next-event-link" href="final-lap.html"><small>Next event</small> Final Lap <span class="lap-arrow" aria-hidden="true">↗</span></a></div></details></nav></header><main><div class="photorun-board-area dark">
 <details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
 <section class="photorun-board" aria-labelledby="ranking-heading">
   <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
