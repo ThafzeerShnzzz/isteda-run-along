@@ -457,12 +457,19 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-vis
 .finish-note strong{display:block;margin-bottom:22px}
 .finish-photo{display:block;width:100%;height:auto;border-radius:8px}
 @media(max-width:680px){.finish-inner{grid-template-columns:1fr;padding-inline:20px}.finish-photo{max-width:440px;justify-self:center}}
+</style><style>
+.ranking-disclosure{width:min(calc(100% - 32px),1080px);margin:12px auto}
+.ranking-disclosure summary{width:fit-content;cursor:pointer;padding:11px 16px;border:1px solid #637044;border-radius:24px;color:var(--lime);font-size:14px;font-weight:700}
+.ranking-disclosure .photorun-board{width:100%;margin:12px 0 0}
+.ranking-hide,.ranking-disclosure[open] .ranking-view{display:none}
+.ranking-disclosure[open] .ranking-hide{display:inline}
 </style></head><body><header class="dark"><nav class="wrap nav"><div class="logo"><img alt="ISTEDA" src="isteda-logo.png.png" style="width:245px;max-width:100%;height:auto;display:block"/></div><div class="navlinks"><a href="#plan">THE PLAN</a><a href="challenges.html">PhotoRun</a><a href="#join">JOIN THE CREW <span class="run-arrow" aria-hidden="true">↗</span></a></div></nav></header><main><div class="photorun-board-area dark">
-<section class="photorun-board" aria-labelledby="photorun-scoreboard">
-  <div class="photorun-board-head"><h2 id="photorun-scoreboard" tabindex="-1">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
+<details class="ranking-disclosure"><summary id="photorun-scoreboard"><span class="ranking-view">View</span><span class="ranking-hide">Hide</span> PhotoRun Scoreboard</summary>
+<section class="photorun-board" aria-labelledby="ranking-heading">
+  <div class="photorun-board-head"><h2 id="ranking-heading">PhotoRun Top Scoreboard</h2><button type="button" id="photorun-ranking-refresh">Refresh</button></div>
   <table><thead><tr><th scope="col">Position</th><th scope="col">Name</th><th scope="col">Score</th><th scope="col">Challenges completed</th></tr></thead><tbody id="photorun-ranking"></tbody></table>
   <p id="photorun-ranking-status" role="status"></p>
-</section>
+</section></details>
 <script src="photorun-scoreboard.js?v=1" defer></script>
 </div><section class="finish dark" aria-labelledby="finish-heading">
   <div class="wrap finish-inner">
@@ -553,6 +560,15 @@ registrationForm.addEventListener('submit', e=>{e.preventDefault();submitRunAlon
   const trigger = document.getElementById('run-gathering-trigger');
   const dialog = document.getElementById('run-gathering-dialog');
   const scoreboard = document.getElementById('photorun-scoreboard');
+  const rankings = scoreboard.closest('details');
+  const openLinkedRankings = () => {
+    if (location.hash === '#photorun-scoreboard') rankings.open = true;
+  };
+  openLinkedRankings();
+  window.addEventListener('hashchange', openLinkedRankings);
+  document.querySelectorAll('a[href="#photorun-scoreboard"]').forEach(link => {
+    link.addEventListener('click', () => { rankings.open = true; });
+  });
   const storageKey = 'runalong-notification-options-read-20261123';
 
   try {
