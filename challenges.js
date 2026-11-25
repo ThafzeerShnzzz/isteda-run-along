@@ -65,7 +65,7 @@ function updateProgress() {
     if (level.kind === "awards") {
       for (const task of level.tasks) {
         const review = entry.reviews?.[task.id];
-        if (["Pending", "Approved", "Winner"].includes(review)) total += level.submissionPoints;
+        if (["Approved", "Winner"].includes(review)) total += level.submissionPoints;
         if (review === "Winner") total += task.awardPoints;
       }
     }
@@ -317,7 +317,7 @@ async function json(url) {
 
 try {
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=special-award-points"), json("challenge-config.json")
+    json("challenge-questions.json?v=approved-special-awards"), json("challenge-config.json")
   ]);
   if (endpoint) {
     byId("continue").disabled = false;

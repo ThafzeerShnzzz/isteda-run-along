@@ -194,7 +194,7 @@ function photoRunLeaderboard_(workbook, config) {
     }
     for (const id of ["OPEN-03", "OPEN-04", "OPEN-05"]) {
       const state = player.reviews.get(id);
-      if (["Pending", "Approved", "Winner"].includes(state)) score += 2;
+      if (["Approved", "Winner"].includes(state)) score += 2;
       if (state === "Winner") score += 4;
     }
     if (score > 0) scores.push({name: player.name, score, completed});

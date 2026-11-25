@@ -133,6 +133,6 @@
     ],
     "kind": "awards",
     "submissionPoints": 2,
-    "rule": "Earn 2 points for submitting in each category. First place earns 4 extra points (6 total). Rejected uploads earn 0."
+    "rule": "Each approved Special Awards upload earns 2 points per category. First place earns 4 extra points (6 total). Pending and rejected uploads earn 0."
   }
 ]
