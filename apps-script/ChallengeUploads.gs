@@ -124,8 +124,8 @@ function reviewProgress_(workbook, phone) {
   const reviews = {};
   if (sheet && sheet.getLastRow() > 1) {
     for (const row of sheet.getRange(2, 2, sheet.getLastRow() - 1, 6).getDisplayValues()) {
-      const [number, task, , , , status] = row;
-      if (normalizePhone_(number) !== phone || !/^(L[123]|OPEN)-\d{2}$/.test(task)) continue;
+      const [number, task, , , photo, status] = row;
+      if (!photo || normalizePhone_(number) !== phone || !/^(L[123]|OPEN)-\d{2}$/.test(task)) continue;
       reviews[task] = status || "Pending";
     }
   }
@@ -180,7 +180,7 @@ function photoRunLeaderboard_(workbook, config) {
   }
   for (const row of photos.getRange(2, 2, photos.getLastRow() - 1, 6).getDisplayValues()) {
     const player = players.get(normalizePhone_(row[0]));
-    if (player) player.reviews.set(row[1], row[5]);
+    if (player && row[4]) player.reviews.set(row[1], row[5] || "Pending");
   }
 
   const scores = [];
@@ -192,8 +192,11 @@ function photoRunLeaderboard_(workbook, config) {
       completed += count;
       score += Math.min(count, level.limit) * level.points;
     }
-    score += ["OPEN-03", "OPEN-04"].filter(id => player.reviews.get(id) === "Winner").length * 4;
-    if (player.reviews.get("OPEN-05") === "Winner") score += 5;
+    for (const id of ["OPEN-03", "OPEN-04", "OPEN-05"]) {
+      const state = player.reviews.get(id);
+      if (["Pending", "Approved", "Winner"].includes(state)) score += 2;
+      if (state === "Winner") score += 4;
+    }
     if (score > 0) scores.push({name: player.name, score, completed});
   }
 

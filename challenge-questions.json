@@ -114,23 +114,25 @@
     "tasks": [
       {
         "id": "OPEN-03",
-        "title": "Best Photography Award · 4 points",
-        "text": "Submit any photo related to Dubai Run. The winning photo earns 4 points.",
+        "title": "Best Photography Award",
+        "text": "Submit any photo related to Dubai Run.",
         "awardPoints": 4
       },
       {
         "id": "OPEN-04",
-        "title": "Best Selfie · 4 points",
-        "text": "Take a selfie with something related to Dubai Run. The winning selfie earns 4 points.",
+        "title": "Best Selfie",
+        "text": "Take a selfie with something related to Dubai Run.",
         "awardPoints": 4
       },
       {
         "id": "OPEN-05",
-        "title": "Most Calories Burned · 5 points",
+        "title": "Most Calories Burned",
         "text": "Upload a screenshot or other proof showing your total calories burned on Dubai Run day.",
-        "awardPoints": 5
+        "awardPoints": 4
       }
     ],
-    "kind": "awards"
+    "kind": "awards",
+    "submissionPoints": 2,
+    "rule": "Earn 2 points for submitting in each category. First place earns 4 extra points (6 total). Rejected uploads earn 0."
   }
 ]

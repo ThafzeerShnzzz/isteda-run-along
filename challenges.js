@@ -62,10 +62,16 @@ function updateProgress() {
   catalog.forEach((level, index) => {
     const count = levelCount(level);
     total += Math.min(count, level.scoringLimit ?? count) * (level.points || 0);
+    if (level.kind === "awards") {
+      for (const task of level.tasks) {
+        const review = entry.reviews?.[task.id];
+        if (["Pending", "Approved", "Winner"].includes(review)) total += level.submissionPoints;
+        if (review === "Winner") total += task.awardPoints;
+      }
+    }
     const button = byId("levels").children[index].querySelector("button");
     button.querySelector(".level-count").textContent = count + "/" + level.tasks.length;
   });
-  total += ["OPEN-03", "OPEN-04"].filter(id => entry.reviews?.[id] === "Winner").length * 4;
   byId("score").textContent = "Total points: " + total;
   if (activeLevel >= 0) {
     const level = catalog[activeLevel];
@@ -103,7 +109,7 @@ function displayLevel(index) {
     const review = entry.reviews?.[task.id];
     if (entry.completed.includes(task.id) || review === "Pending") {
       const label = entry.preview ? "Test submission complete" :
-        review === "Winner" ? `Award winner · ${task.awardPoints} points` :
+        review === "Winner" ? `First place · ${level.submissionPoints + task.awardPoints} points` :
         review === "Approved" ? "Approved" : "Submitted for review";
       card.append(make("p", label));
       continue;
@@ -311,7 +317,7 @@ async function json(url) {
 
 try {
   [catalog, {submissionUrl: endpoint}] = await Promise.all([
-    json("challenge-questions.json?v=common-wristband"), json("challenge-config.json")
+    json("challenge-questions.json?v=special-award-points"), json("challenge-config.json")
   ]);
   if (endpoint) {
     byId("continue").disabled = false;
